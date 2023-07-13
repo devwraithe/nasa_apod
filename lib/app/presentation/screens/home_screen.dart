@@ -1,7 +1,12 @@
+import 'package:cloudwalk_assessment/app/core/routes/routes.dart';
 import 'package:cloudwalk_assessment/app/core/theme/text_theme.dart';
+import 'package:cloudwalk_assessment/app/core/utilities/date_format.dart';
+import 'package:cloudwalk_assessment/app/presentation/cubits/nasa_images/nasa_images_cubit.dart';
 import 'package:cloudwalk_assessment/app/presentation/widgets/photo_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../cubits/nasa_images/nasa_images_states.dart';
 import '../widgets/search_field.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -11,6 +16,36 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  void _getImages() async {
+    try {
+      await BlocProvider.of<ImagesCubit>(context).getImages();
+    } catch (e) {
+      debugPrint("An error occurred: $e");
+    }
+  }
+
+  List images = [];
+  List displayedImages = [];
+  int displayedImagesCount = 5;
+
+  void loadMoreImages() {
+    int endIndex = displayedImages.length + displayedImagesCount;
+    if (endIndex >= images.length) {
+      endIndex = images.length;
+    }
+    setState(() {
+      displayedImages.addAll(
+        images.getRange(displayedImages.length, endIndex),
+      );
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getImages();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,15 +62,59 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(height: 10),
           const SearchField(),
           Expanded(
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemCount: 10,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20,
-                vertical: 30,
-              ),
-              itemBuilder: (context, index) {
-                return const PhotoCard();
+            child: BlocConsumer<ImagesCubit, ImagesStates>(
+              listener: (context, state) {
+                if (state is ImagesLoaded) {
+                  setState(() => images = state.result);
+                  loadMoreImages();
+                }
+              },
+              builder: (context, state) {
+                if (state is ImagesLoaded) {
+                  return ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    // itemCount: state.result.length,
+                    itemCount: displayedImages.length +
+                        (displayedImages.length < images.length ? 1 : 0),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 30,
+                    ),
+                    itemBuilder: (context, index) {
+                      final photo = images[index];
+                      if (index == displayedImages.length) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                            // onPressed: () {
+                            //   loadMoreImages();
+                            // },
+                            onPressed: displayedImages.length < images.length ? loadMoreImages : null,
+                            child: Text('Load More'),
+                          ),
+                        );
+                      }
+                      return PhotoCard(
+                        title: photo.title,
+                        date: FormatDate.format(photo.date),
+                        image: photo.hdUrl,
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            Routes.detail,
+                            arguments: photo,
+                          );
+                        },
+                      );
+                    },
+                  );
+                } else if (state is ImagesError) {
+                  return const Text("Error");
+                } else if (state is ImagesLoading) {
+                  return const Text("Loading");
+                } else {
+                  return const Text("Something went wrong");
+                }
               },
             ),
           ),
