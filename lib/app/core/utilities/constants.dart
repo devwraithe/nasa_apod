@@ -1,3 +1,3 @@
 class Constants {
-  static String fontFamily = 'Gilroy';
+  static String fontFamily = 'Circular';
 }
