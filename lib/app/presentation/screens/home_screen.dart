@@ -16,7 +16,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  void _getImages() async {
+  final refreshKey = GlobalKey<RefreshIndicatorState>();
+
+  Future<void> _getImages() async {
     try {
       await BlocProvider.of<ImagesCubit>(context).getImages();
     } catch (e) {
@@ -71,42 +73,47 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               builder: (context, state) {
                 if (state is ImagesLoaded) {
-                  return ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    // itemCount: state.result.length,
-                    itemCount: displayedImages.length +
-                        (displayedImages.length < images.length ? 1 : 0),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 30,
-                    ),
-                    itemBuilder: (context, index) {
-                      final photo = images[index];
-                      if (index == displayedImages.length) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ElevatedButton(
-                            // onPressed: () {
-                            //   loadMoreImages();
-                            // },
-                            onPressed: displayedImages.length < images.length ? loadMoreImages : null,
-                            child: Text('Load More'),
-                          ),
-                        );
-                      }
-                      return PhotoCard(
-                        title: photo.title,
-                        date: FormatDate.format(photo.date),
-                        image: photo.hdUrl,
-                        onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            Routes.detail,
-                            arguments: photo,
+                  return RefreshIndicator(
+                    key: refreshKey,
+                    onRefresh: () => _getImages(),
+                    child: ListView.builder(
+                      physics: const BouncingScrollPhysics(),
+                      itemCount: displayedImages.length +
+                          (displayedImages.length < images.length ? 1 : 0),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 30,
+                      ),
+                      itemBuilder: (context, index) {
+                        final photo = images[index];
+                        if (index == displayedImages.length) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              // onPressed: () {
+                              //   loadMoreImages();
+                              // },
+                              onPressed: displayedImages.length < images.length
+                                  ? loadMoreImages
+                                  : null,
+                              child: Text('Load More'),
+                            ),
                           );
-                        },
-                      );
-                    },
+                        }
+                        return PhotoCard(
+                          title: photo.title,
+                          date: FormatDate.format(photo.date),
+                          image: photo.hdUrl,
+                          onTap: () {
+                            Navigator.pushNamed(
+                              context,
+                              Routes.detail,
+                              arguments: photo,
+                            );
+                          },
+                        );
+                      },
+                    ),
                   );
                 } else if (state is ImagesError) {
                   return const Text("Error");
