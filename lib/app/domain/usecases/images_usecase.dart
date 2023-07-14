@@ -9,6 +9,10 @@ class NasaImagesUsecase {
   NasaImagesUsecase(this.repo);
 
   Future<Either<Failure, List<ImageEntity>>> execute() async {
-    return await repo.getImagesRepo();
+    final result = await repo.getImagesRepo();
+    return result.fold(
+      (failure) => Left(failure),
+      (images) => Right(images),
+    );
   }
 }
