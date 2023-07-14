@@ -2,8 +2,11 @@ import 'package:cloudwalk_assessment/app/core/theme/text_theme.dart';
 import 'package:flutter/material.dart';
 
 class SearchField extends StatelessWidget {
-  const SearchField({super.key});
-
+  final Function(String)? onChanged;
+  const SearchField({
+    super.key,
+    required this.onChanged,
+  });
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -13,6 +16,7 @@ class SearchField extends StatelessWidget {
         decoration: const InputDecoration(
           hintText: "Find by title or date",
         ),
+        onChanged: onChanged,
       ),
     );
   }

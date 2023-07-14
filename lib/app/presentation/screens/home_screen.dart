@@ -3,22 +3,30 @@ import 'package:cloudwalk_assessment/app/core/theme/text_theme.dart';
 import 'package:cloudwalk_assessment/app/core/utilities/date_format.dart';
 import 'package:cloudwalk_assessment/app/presentation/cubits/nasa_images/nasa_images_cubit.dart';
 import 'package:cloudwalk_assessment/app/presentation/widgets/photo_card.dart';
+import 'package:cloudwalk_assessment/app/presentation/widgets/search_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../cubits/nasa_images/nasa_images_states.dart';
-import '../widgets/search_field.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   final refreshKey = GlobalKey<RefreshIndicatorState>();
+  final searchController = TextEditingController();
 
-  Future<void> _getImages() async {
+  List allImages = [];
+  List displayedImages = [];
+  List foundImages = []; // for search
+  int displayedImagesCount = 5;
+
+  // method to retrieve image cubit
+  Future<void> getImages() async {
     try {
       await BlocProvider.of<ImagesCubit>(context).getImages();
     } catch (e) {
@@ -26,26 +34,52 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  List images = [];
-  List displayedImages = [];
-  int displayedImagesCount = 5;
+  Future<void> filterImages(String enteredKeyword) async {
+    // foundImages = allImages; // most likely useless
 
-  void loadMoreImages() {
-    int endIndex = displayedImages.length + displayedImagesCount;
-    if (endIndex >= images.length) {
-      endIndex = images.length;
+    List results = [];
+    if (enteredKeyword.isEmpty) {
+      results = []; // less potential
+    } else {
+      results = allImages.where((photo) {
+        final titleMatches =
+            photo.title.toLowerCase().contains(enteredKeyword.toLowerCase());
+        final dateMatches = FormatDate.format(photo.date)
+            .toLowerCase()
+            .contains(enteredKeyword.toLowerCase());
+        return titleMatches || dateMatches;
+      }).toList();
     }
+
     setState(() {
-      displayedImages.addAll(
-        images.getRange(displayedImages.length, endIndex),
-      );
+      foundImages = results;
     });
+  }
+
+  Future<void> moreImages() async {
+    int endIndex = displayedImages.length + displayedImagesCount;
+    if (endIndex >= allImages.length) endIndex = allImages.length;
+
+    setState(
+      () => displayedImages.addAll(
+        allImages.getRange(
+          displayedImages.length,
+          endIndex,
+        ),
+      ),
+    );
   }
 
   @override
   void initState() {
     super.initState();
-    _getImages();
+    getImages();
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -62,56 +96,96 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           const SizedBox(height: 10),
-          const SearchField(),
+          SearchField(
+            onChanged: (value) => filterImages(value),
+          ),
           Expanded(
             child: BlocConsumer<ImagesCubit, ImagesStates>(
               listener: (context, state) {
                 if (state is ImagesLoaded) {
-                  setState(() => images = state.result);
-                  loadMoreImages();
+                  setState(() => allImages = state.result);
+                  displayedImages.length < 5 ? moreImages() : null;
                 }
               },
               builder: (context, state) {
                 if (state is ImagesLoaded) {
                   return RefreshIndicator(
                     key: refreshKey,
-                    onRefresh: () => _getImages(),
+                    onRefresh: getImages,
                     child: ListView.builder(
                       physics: const BouncingScrollPhysics(),
-                      itemCount: displayedImages.length +
-                          (displayedImages.length < images.length ? 1 : 0),
+                      itemCount: foundImages.isEmpty
+                          ? displayedImages.length +
+                              (displayedImages.length < allImages.length
+                                  ? 1
+                                  : 0)
+                          : foundImages.length,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 20,
                         vertical: 30,
                       ),
                       itemBuilder: (context, index) {
-                        final photo = images[index];
-                        if (index == displayedImages.length) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ElevatedButton(
-                              // onPressed: () {
-                              //   loadMoreImages();
-                              // },
-                              onPressed: displayedImages.length < images.length
-                                  ? loadMoreImages
-                                  : null,
-                              child: Text('Load More'),
+                        if (foundImages.isNotEmpty) {
+                          final image = foundImages[index];
+
+                          return PhotoCard(
+                            title: image.title,
+                            date: FormatDate.format(image.date),
+                            image: image.hdUrl,
+                            onTap: () => Navigator.pushNamed(
+                              context,
+                              Routes.detail,
+                              arguments: image,
+                            ),
+                          );
+                        } else {
+                          final image = allImages[index];
+                          if (index == displayedImages.length) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ElevatedButton(
+                                onPressed:
+                                    displayedImages.length < allImages.length
+                                        ? moreImages
+                                        : null,
+                                child: const Text('Load More'),
+                              ),
+                            );
+                          }
+                          return PhotoCard(
+                            title: image.title,
+                            date: FormatDate.format(image.date),
+                            image: image.hdUrl,
+                            onTap: () => Navigator.pushNamed(
+                              context,
+                              Routes.detail,
+                              arguments: image,
                             ),
                           );
                         }
-                        return PhotoCard(
-                          title: photo.title,
-                          date: FormatDate.format(photo.date),
-                          image: photo.hdUrl,
-                          onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              Routes.detail,
-                              arguments: photo,
-                            );
-                          },
-                        );
+                        // final image = searchController.text.isNotEmpty ?  allImages[index];
+                        // if (index == displayedImages.length) {
+                        //   return Padding(
+                        //     padding: const EdgeInsets.all(8.0),
+                        //     child: ElevatedButton(
+                        //       onPressed:
+                        //           displayedImages.length < allImages.length
+                        //               ? moreImages
+                        //               : null,
+                        //       child: const Text('Load More'),
+                        //     ),
+                        //   );
+                        // }
+                        // return PhotoCard(
+                        //   title: image.title,
+                        //   date: FormatDate.format(image.date),
+                        //   image: image.hdUrl,
+                        //   onTap: () => Navigator.pushNamed(
+                        //     context,
+                        //     Routes.detail,
+                        //     arguments: image,
+                        //   ),
+                        // );
                       },
                     ),
                   );

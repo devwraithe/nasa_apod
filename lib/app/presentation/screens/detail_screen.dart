@@ -61,17 +61,18 @@ class _DetailScreenState extends State<DetailScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    photo.title,
-                    style: AppTextTheme.textTheme.headlineLarge,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
                     FormatDate.format(photo.date),
                     style: AppTextTheme.textTheme.headlineSmall?.copyWith(
                       color: AppColors.grey,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 8),
+                  Text(
+                    photo.title,
+                    style: AppTextTheme.textTheme.headlineLarge,
+                  ),
+                  const SizedBox(height: 12),
                   Text(
                     photo.explanation,
                     style: AppTextTheme.textTheme.bodyLarge?.copyWith(
