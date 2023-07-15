@@ -16,7 +16,7 @@ class CloudwalkAssessment extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (_) => di.sl<ImagesCubit>(),
-        )
+        ),
       ],
       child: MaterialApp(
         title: 'Cloudwalk Assessment',

@@ -5,4 +5,6 @@ import '../../core/utilities/errors/failure.dart';
 
 abstract class Repository {
   Future<Either<Failure, List<ImageEntity>>> getImagesRepo();
+  Future<void> updateLocalDatabase(List<ImageEntity> images);
+  Future<List<ImageEntity>> getCachedImages();
 }
