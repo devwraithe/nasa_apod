@@ -1,7 +1,7 @@
 import 'package:cloudwalk_assessment/env/env.dart';
 
 class Constants {
-  static String fontFamily = 'Circular';
+  static String fontFamily = 'DMSans';
   static String baseUrl = "https://api.nasa.gov";
   static String apiPath =
       "$baseUrl/planetary/apod?api_key=${Env.apiKey}&start_date=2023-06-20";

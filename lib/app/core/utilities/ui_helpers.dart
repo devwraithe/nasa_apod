@@ -14,9 +14,9 @@ class UiHelpers {
     return OutlineInputBorder(
       borderSide: BorderSide(
         color: color,
-        width: 1.4,
+        width: 1.2,
       ),
-      borderRadius: BorderRadius.circular(50),
+      borderRadius: BorderRadius.circular(10),
     );
   }
 

@@ -6,7 +6,7 @@ import 'package:cloudwalk_assessment/app/core/utilities/constants.dart';
 import 'package:cloudwalk_assessment/app/core/utilities/date_format.dart';
 import 'package:cloudwalk_assessment/app/core/utilities/ui_helpers.dart';
 import 'package:cloudwalk_assessment/app/presentation/cubits/nasa_images/nasa_images_cubit.dart';
-import 'package:cloudwalk_assessment/app/presentation/widgets/search_field.dart';
+import 'package:cloudwalk_assessment/app/presentation/widgets/custom_app_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List allImages = [];
   List displayedImages = []; // for pagination
   List retrievedImages = []; // for search
-  int displayedImagesCount = 5;
+  int displayedImagesCount = 5; // num of images to show at once
 
   int? myIndex;
 
@@ -36,41 +36,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            decoration: BoxDecoration(
-              color: AppColors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.black.withOpacity(0.6),
-                  blurRadius: 10,
-                  spreadRadius: 2.4,
-                  offset: const Offset(0, 1),
-                ),
-              ],
-            ),
-            padding: const EdgeInsets.only(
-              top: 24,
-              bottom: 28,
-            ),
-            child: Column(
-              children: [
-                SafeArea(
-                  child: Text(
-                    "Astronomia \u{1F680}",
-                    style: AppTextTheme.textTheme.headlineLarge?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                SearchField(
-                  onChanged: (value) => filterImages(value),
-                ),
-              ],
-            ),
-          ),
+          CustomAppBar(onChanged: (value) => filterImages(value)),
           Expanded(
             child: BlocConsumer<ImagesCubit, ImagesStates>(
               listener: (context, state) {
