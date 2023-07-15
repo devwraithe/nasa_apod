@@ -159,29 +159,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           );
                         }
-                        // final image = searchController.text.isNotEmpty ?  allImages[index];
-                        // if (index == displayedImages.length) {
-                        //   return Padding(
-                        //     padding: const EdgeInsets.all(8.0),
-                        //     child: ElevatedButton(
-                        //       onPressed:
-                        //           displayedImages.length < allImages.length
-                        //               ? moreImages
-                        //               : null,
-                        //       child: const Text('Load More'),
-                        //     ),
-                        //   );
-                        // }
-                        // return PhotoCard(
-                        //   title: image.title,
-                        //   date: FormatDate.format(image.date),
-                        //   image: image.hdUrl,
-                        //   onTap: () => Navigator.pushNamed(
-                        //     context,
-                        //     Routes.detail,
-                        //     arguments: image,
-                        //   ),
-                        // );
                       },
                     ),
                   );
