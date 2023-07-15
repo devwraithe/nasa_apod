@@ -9,9 +9,9 @@ class AppInputDecorationTheme {
     hintStyle: AppTextTheme.textTheme.bodyLarge?.copyWith(
       color: AppColors.grey,
     ),
-    contentPadding: const EdgeInsets.fromLTRB(20, 26, 20, 18),
+    contentPadding: const EdgeInsets.fromLTRB(24, 28, 24, 18),
     floatingLabelBehavior: FloatingLabelBehavior.never,
-    isDense: true,
+    // isDense: true,
     border: UiHelpers.inputStyle(AppColors.grey),
     enabledBorder: UiHelpers.inputStyle(AppColors.grey),
     focusedBorder: UiHelpers.inputStyle(AppColors.black),

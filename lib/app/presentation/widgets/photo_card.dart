@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloudwalk_assessment/app/core/theme/colors.dart';
 import 'package:cloudwalk_assessment/app/core/theme/text_theme.dart';
+import 'package:cloudwalk_assessment/app/core/utilities/constants.dart';
+import 'package:cloudwalk_assessment/app/core/utilities/ui_helpers.dart';
 import 'package:flutter/material.dart';
 
 class PhotoCard extends StatelessWidget {
@@ -30,9 +32,10 @@ class PhotoCard extends StatelessWidget {
                 tag: title,
                 child: CachedNetworkImage(
                   imageUrl: image,
+                  placeholder: (context, url) => UiHelpers.imagePreload(),
                   fit: BoxFit.cover,
                   filterQuality: FilterQuality.high,
-                  height: 240,
+                  height: Constants.imageHeight,
                   width: double.infinity,
                 ),
               ),
