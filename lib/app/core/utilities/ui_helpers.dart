@@ -41,6 +41,9 @@ class UiHelpers {
       style: FilledButton.styleFrom(
         backgroundColor: AppColors.black,
         minimumSize: const Size(double.infinity, 60),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
       ),
       child: Text(
         'Show More',

@@ -7,12 +7,14 @@ import 'package:cloudwalk_assessment/app/core/utilities/date_format.dart';
 import 'package:cloudwalk_assessment/app/core/utilities/ui_helpers.dart';
 import 'package:cloudwalk_assessment/app/presentation/cubits/nasa_images/nasa_images_cubit.dart';
 import 'package:cloudwalk_assessment/app/presentation/widgets/custom_app_bar.dart';
+import 'package:cloudwalk_assessment/app/presentation/widgets/images_list_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../core/utilities/responsive.dart';
 import '../cubits/nasa_images/nasa_images_states.dart';
+import '../widgets/images_grid_view.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -34,6 +36,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // handle pagination
+    final itemCount = retrievedImages.isEmpty
+        ? displayedImages.length +
+            (displayedImages.length < allImages.length ? 1 : 0)
+        : retrievedImages.length;
+
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,103 +62,37 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: AppColors.black,
                     onRefresh: getImages,
                     child: Responsive.isMobile(context)
-                        ? ListView.builder(
-                            physics: const BouncingScrollPhysics(),
-                            itemCount: retrievedImages.isEmpty
-                                ? displayedImages.length +
-                                    (displayedImages.length < allImages.length
-                                        ? 1
-                                        : 0)
-                                : retrievedImages.length,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 28,
+                        ? ImagesListView(
+                            itemCount,
+                            retrievedImages,
+                            allImages,
+                            displayedImages,
+                            UiHelpers.showMoreButton(
+                              displayedImages.length < allImages.length
+                                  ? moreImages
+                                  : null,
                             ),
-                            itemBuilder: (context, index) {
-                              if (retrievedImages.isNotEmpty) {
-                                final image = retrievedImages[index];
-                                return UiHelpers.image(image, context);
-                              } else {
-                                final image = allImages[index];
-                                if (index == displayedImages.length) {
-                                  return Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: UiHelpers.showMoreButton(
-                                      displayedImages.length < allImages.length
-                                          ? moreImages
-                                          : null,
-                                    ),
-                                  );
-                                }
-                                return UiHelpers.image(image, context);
-                              }
-                            },
                           )
-                        : Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24),
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: GridView.builder(
-                                    gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      crossAxisSpacing: 24,
-                                      mainAxisSpacing: 24,
-                                    ),
-                                    itemCount: retrievedImages.isEmpty
-                                        ? displayedImages.length +
-                                            (displayedImages.length <
-                                                    allImages.length
-                                                ? 1
-                                                : 0)
-                                        : retrievedImages
-                                            .length, // Total number of items in the grid
-                                    itemBuilder: (context, index) {
-                                      if (retrievedImages.isNotEmpty) {
-                                        final image = retrievedImages[index];
-                                        return UiHelpers.image(image, context);
-                                      } else {
-                                        //   final image = allImages[index];
-                                        //
-                                        //   myIndex = index;
-                                        //
-                                        //   return UiHelpers.image(image, context);
-                                        // }
-                                        final image = allImages[index];
-                                        if (index == displayedImages.length) {
-                                          return Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: UiHelpers.showMoreButton(
-                                              displayedImages.length <
-                                                      allImages.length
-                                                  ? moreImages
-                                                  : null,
-                                            ),
-                                          );
-                                        }
-                                        return UiHelpers.image(image, context);
-                                      }
-                                    },
-                                  ),
-                                ),
-                                myIndex == displayedImages.length
-                                    ? Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: UiHelpers.showMoreButton(
-                                          displayedImages.length <
-                                                  allImages.length
-                                              ? moreImages
-                                              : null,
-                                        ),
-                                      )
-                                    : const SizedBox(),
-                              ],
+                        : ImagesGridView(
+                            itemCount,
+                            retrievedImages,
+                            allImages,
+                            displayedImages,
+                            UiHelpers.showMoreButton(
+                              displayedImages.length < allImages.length
+                                  ? moreImages
+                                  : null,
                             ),
                           ),
                   );
                 } else if (state is ImagesError) {
-                  return Text(state.message);
+                  return Center(
+                    child: Text(
+                      state.message,
+                      textAlign: TextAlign.center,
+                      style: AppTextTheme.textTheme.bodyLarge,
+                    ),
+                  );
                 } else if (state is ImagesLoading) {
                   return const Center(
                     child: CupertinoActivityIndicator(
@@ -198,9 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     // attach images filtered to retrievedImages
-    setState(() {
-      retrievedImages = images;
-    });
+    setState(() => retrievedImages = images);
   }
 
   // handle pagination, show 5 images at once
