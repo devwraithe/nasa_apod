@@ -15,4 +15,13 @@ class NasaImagesUsecase {
       (images) => Right(images),
     );
   }
+
+  // local data
+  Future<void> storeImage(List<ImageEntity> images) async {
+    return await repo.updateLocalDatabase(images);
+  }
+
+  Future<List<ImageEntity>> getCachedImages() async {
+    return await repo.getCachedImages();
+  }
 }

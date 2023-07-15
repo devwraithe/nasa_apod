@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../core/utilities/responsive.dart';
 import '../cubits/nasa_images/nasa_images_states.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -28,6 +29,8 @@ class _HomeScreenState extends State<HomeScreen> {
   List displayedImages = []; // for pagination
   List retrievedImages = []; // for search
   int displayedImagesCount = 5;
+
+  int? myIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -82,38 +85,101 @@ class _HomeScreenState extends State<HomeScreen> {
                     key: refreshKey,
                     color: AppColors.black,
                     onRefresh: getImages,
-                    child: ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: retrievedImages.isEmpty
-                          ? displayedImages.length +
-                              (displayedImages.length < allImages.length
-                                  ? 1
-                                  : 0)
-                          : retrievedImages.length,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 28,
-                      ),
-                      itemBuilder: (context, index) {
-                        if (retrievedImages.isNotEmpty) {
-                          final image = retrievedImages[index];
-                          return UiHelpers.image(image, context);
-                        } else {
-                          final image = allImages[index];
-                          if (index == displayedImages.length) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: UiHelpers.showMoreButton(
-                                displayedImages.length < allImages.length
-                                    ? moreImages
-                                    : null,
-                              ),
-                            );
-                          }
-                          return UiHelpers.image(image, context);
-                        }
-                      },
-                    ),
+                    child: Responsive.isMobile(context)
+                        ? ListView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: retrievedImages.isEmpty
+                                ? displayedImages.length +
+                                    (displayedImages.length < allImages.length
+                                        ? 1
+                                        : 0)
+                                : retrievedImages.length,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 28,
+                            ),
+                            itemBuilder: (context, index) {
+                              if (retrievedImages.isNotEmpty) {
+                                final image = retrievedImages[index];
+                                return UiHelpers.image(image, context);
+                              } else {
+                                final image = allImages[index];
+                                if (index == displayedImages.length) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: UiHelpers.showMoreButton(
+                                      displayedImages.length < allImages.length
+                                          ? moreImages
+                                          : null,
+                                    ),
+                                  );
+                                }
+                                return UiHelpers.image(image, context);
+                              }
+                            },
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 24),
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: GridView.builder(
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 24,
+                                      mainAxisSpacing: 24,
+                                    ),
+                                    itemCount: retrievedImages.isEmpty
+                                        ? displayedImages.length +
+                                            (displayedImages.length <
+                                                    allImages.length
+                                                ? 1
+                                                : 0)
+                                        : retrievedImages
+                                            .length, // Total number of items in the grid
+                                    itemBuilder: (context, index) {
+                                      if (retrievedImages.isNotEmpty) {
+                                        final image = retrievedImages[index];
+                                        return UiHelpers.image(image, context);
+                                      } else {
+                                        //   final image = allImages[index];
+                                        //
+                                        //   myIndex = index;
+                                        //
+                                        //   return UiHelpers.image(image, context);
+                                        // }
+                                        final image = allImages[index];
+                                        if (index == displayedImages.length) {
+                                          return Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: UiHelpers.showMoreButton(
+                                              displayedImages.length <
+                                                      allImages.length
+                                                  ? moreImages
+                                                  : null,
+                                            ),
+                                          );
+                                        }
+                                        return UiHelpers.image(image, context);
+                                      }
+                                    },
+                                  ),
+                                ),
+                                myIndex == displayedImages.length
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: UiHelpers.showMoreButton(
+                                          displayedImages.length <
+                                                  allImages.length
+                                              ? moreImages
+                                              : null,
+                                        ),
+                                      )
+                                    : const SizedBox(),
+                              ],
+                            ),
+                          ),
                   );
                 } else if (state is ImagesError) {
                   return Text(state.message);
