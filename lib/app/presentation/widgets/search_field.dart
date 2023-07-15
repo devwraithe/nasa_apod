@@ -14,7 +14,7 @@ class SearchField extends StatelessWidget {
       child: TextField(
         style: AppTextTheme.textTheme.bodyLarge,
         decoration: const InputDecoration(
-          hintText: "Find by title or date",
+          hintText: "Find by title or date e.g 20 June 2023",
         ),
         onChanged: onChanged,
       ),

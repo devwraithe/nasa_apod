@@ -13,4 +13,6 @@ class Constants {
   static String lostConnection =
       "Network connection lost. Please check your internet connection.";
   static String timeout = "Request timed out. Please try again later.";
+
+  static double imageHeight = 240;
 }
