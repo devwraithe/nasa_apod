@@ -1,17 +1,19 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 
 import 'failure.dart';
 
 class ServerException extends Equatable implements Exception {
-  final Failure err;
-  const ServerException(this.err);
+  final Failure failure;
+  const ServerException(this.failure);
   @override
-  List<Object?> get props => [err];
+  List<Object?> get props => [failure];
 }
 
-class ConnectionException extends Equatable implements Exception {
-  final Failure err;
-  const ConnectionException(this.err);
+class NetworkException extends Equatable implements IOException {
+  final Failure failure;
+  const NetworkException(this.failure);
   @override
-  List<Object?> get props => [err];
+  List<Object?> get props => [failure];
 }

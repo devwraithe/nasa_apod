@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloudwalk_assessment/app/core/routes/routes.dart';
 import 'package:cloudwalk_assessment/app/core/theme/text_theme.dart';
 import 'package:cloudwalk_assessment/app/core/utilities/date_format.dart';
@@ -27,16 +29,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // method to retrieve image cubit
   Future<void> getImages() async {
-    try {
-      await BlocProvider.of<ImagesCubit>(context).getImages();
-    } catch (e) {
-      debugPrint("An error occurred: $e");
-    }
+    await BlocProvider.of<ImagesCubit>(context).getImages();
   }
 
   Future<void> filterImages(String enteredKeyword) async {
-    // foundImages = allImages; // most likely useless
-
     List results = [];
     if (enteredKeyword.isEmpty) {
       results = []; // less potential
@@ -163,34 +159,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           );
                         }
-                        // final image = searchController.text.isNotEmpty ?  allImages[index];
-                        // if (index == displayedImages.length) {
-                        //   return Padding(
-                        //     padding: const EdgeInsets.all(8.0),
-                        //     child: ElevatedButton(
-                        //       onPressed:
-                        //           displayedImages.length < allImages.length
-                        //               ? moreImages
-                        //               : null,
-                        //       child: const Text('Load More'),
-                        //     ),
-                        //   );
-                        // }
-                        // return PhotoCard(
-                        //   title: image.title,
-                        //   date: FormatDate.format(image.date),
-                        //   image: image.hdUrl,
-                        //   onTap: () => Navigator.pushNamed(
-                        //     context,
-                        //     Routes.detail,
-                        //     arguments: image,
-                        //   ),
-                        // );
                       },
                     ),
                   );
                 } else if (state is ImagesError) {
-                  return const Text("Error");
+                  return Text(state.message);
                 } else if (state is ImagesLoading) {
                   return const Text("Loading");
                 } else {
