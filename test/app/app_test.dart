@@ -1,5 +1,5 @@
 import 'package:cloudwalk_assessment/app/app.dart';
-import 'package:cloudwalk_assessment/app/core/utilities/injectors/dependency_injector.dart'
+import 'package:cloudwalk_assessment/app/core/utilities/dependency_injector.dart'
     as di;
 import 'package:cloudwalk_assessment/app/presentation/cubits/nasa_images/nasa_images_cubit.dart';
 import 'package:cloudwalk_assessment/app/presentation/screens/home_screen.dart';

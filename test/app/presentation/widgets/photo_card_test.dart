@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloudwalk_assessment/app/core/theme/colors.dart';
 import 'package:cloudwalk_assessment/app/core/theme/text_theme.dart';
-import 'package:cloudwalk_assessment/app/presentation/widgets/photo_card.dart';
+import 'package:cloudwalk_assessment/app/presentation/widgets/image_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
