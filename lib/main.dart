@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'app/app.dart';
+import 'app/core/utilities/adapter.dart';
 import 'app/core/utilities/dependency_injector.dart' as di;
-import 'app/core/utilities/image_entity_adapter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -2,13 +2,13 @@ import 'package:cloudwalk_assessment/app/domain/entities/image_entity.dart';
 import 'package:equatable/equatable.dart';
 
 class ImageModel extends Equatable {
-  final String title, date, explanation, hdUrl;
+  final String title, date, explanation, imgUrl;
 
   const ImageModel({
     required this.title,
     required this.date,
     required this.explanation,
-    required this.hdUrl,
+    required this.imgUrl,
   });
 
   factory ImageModel.fromJson(Map<String, dynamic> json) {
@@ -16,7 +16,7 @@ class ImageModel extends Equatable {
       title: json['title'],
       date: json['date'],
       explanation: json['explanation'],
-      hdUrl: json['hdurl'],
+      imgUrl: json['hdurl'],
     );
   }
 
@@ -25,10 +25,10 @@ class ImageModel extends Equatable {
       title: title,
       date: date,
       explanation: explanation,
-      hdUrl: hdUrl,
+      imgUrl: imgUrl,
     );
   }
 
   @override
-  List<Object> get props => [title, date, explanation, hdUrl];
+  List<Object> get props => [title, date, explanation, imgUrl];
 }

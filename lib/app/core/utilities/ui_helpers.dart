@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloudwalk_assessment/app/core/utilities/constants.dart';
 import 'package:cloudwalk_assessment/app/core/utilities/sizing.dart';
 import 'package:cloudwalk_assessment/app/domain/entities/image_entity.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../presentation/widgets/image_card.dart';
 import '../routes/routes.dart';
@@ -27,7 +29,7 @@ class UiHelpers {
     return ImageCard(
       title: image.title,
       date: Helpers.formatDate(image.date),
-      image: image.hdUrl,
+      image: image.imgUrl,
       onTap: () => Navigator.pushNamed(
         context,
         Routes.detail,
@@ -37,7 +39,7 @@ class UiHelpers {
   }
 
   // more button widget for pagination
-  static showMoreButton(void Function()? onPressed) {
+  static filledButton(String title, void Function()? onPressed) {
     return FilledButton(
       onPressed: onPressed,
       style: FilledButton.styleFrom(
@@ -48,7 +50,7 @@ class UiHelpers {
         ),
       ),
       child: Text(
-        'Show More',
+        title,
         style: textTheme.bodyLarge?.copyWith(
           color: AppColors.white,
         ),
@@ -88,6 +90,38 @@ class UiHelpers {
           height: Sizing.isMobile ? Constants.imageHeight : null,
           width: double.infinity,
         ),
+      ),
+    );
+  }
+
+  static errorUi(void Function()? onPressed) {
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        horizontal: 50.w,
+        vertical: 80.h,
+      ),
+      child: Column(
+        children: [
+          Text(
+            Constants.unknownError,
+            textAlign: TextAlign.center,
+            style: textTheme.bodyLarge,
+          ),
+          const SizedBox(height: 22),
+          UiHelpers.filledButton(
+            "Retry",
+            onPressed,
+          ),
+        ],
+      ),
+    );
+  }
+
+  static loader() {
+    return const Center(
+      child: CupertinoActivityIndicator(
+        color: AppColors.black,
+        radius: 12,
       ),
     );
   }

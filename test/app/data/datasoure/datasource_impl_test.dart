@@ -4,7 +4,7 @@ import 'dart:io';
 
 import 'package:cloudwalk_assessment/app/core/utilities/constants.dart';
 import 'package:cloudwalk_assessment/app/core/utilities/errors/exceptions.dart';
-import 'package:cloudwalk_assessment/app/data/datasources/datasource_impl.dart';
+import 'package:cloudwalk_assessment/app/data/datasources/remote_datasource.dart';
 import 'package:cloudwalk_assessment/app/data/models/image_model.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';

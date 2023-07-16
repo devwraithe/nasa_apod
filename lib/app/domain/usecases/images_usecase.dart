@@ -8,7 +8,7 @@ class NasaImagesUsecase {
   final Repository repo;
   NasaImagesUsecase(this.repo);
 
-  Future<Either<Failure, List<ImageEntity>>> execute() async {
+  Future<Either<Failure, List<ImageEntity>>> getImages() async {
     final result = await repo.getImagesRepo();
     return result.fold(
       (failure) => Left(failure),
@@ -16,8 +16,7 @@ class NasaImagesUsecase {
     );
   }
 
-  // local data
-  Future<void> storeImage(List<ImageEntity> images) async {
+  Future<void> updateLocalDatabase(List<ImageEntity> images) async {
     return await repo.updateLocalDatabase(images);
   }
 

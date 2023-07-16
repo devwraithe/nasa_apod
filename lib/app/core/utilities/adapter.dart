@@ -15,7 +15,7 @@ class ImageEntityAdapter extends TypeAdapter<ImageEntity> {
     return ImageEntity(
       title: title,
       date: date,
-      hdUrl: imageUrl,
+      imgUrl: imageUrl,
       explanation: explanation,
     );
   }
@@ -24,7 +24,7 @@ class ImageEntityAdapter extends TypeAdapter<ImageEntity> {
   void write(BinaryWriter writer, ImageEntity obj) {
     writer.writeString(obj.title);
     writer.writeString(obj.date);
-    writer.writeString(obj.hdUrl);
+    writer.writeString(obj.imgUrl);
     writer.writeString(obj.explanation);
   }
 }
