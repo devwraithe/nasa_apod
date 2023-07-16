@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloudwalk_assessment/app/core/utilities/date_format.dart';
-import 'package:cloudwalk_assessment/app/core/utilities/sizing.dart';
+import 'package:cloudwalk_assessment/app/core/utilities/helpers.dart';
 import 'package:cloudwalk_assessment/app/domain/entities/image_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../core/theme/colors.dart';
 import '../../core/theme/text_theme.dart';
@@ -17,21 +17,23 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   @override
   Widget build(BuildContext context) {
-    final photo = ModalRoute.of(context)?.settings.arguments as ImageEntity;
+    // image data sent from home screen
+    final image = ModalRoute.of(context)?.settings.arguments as ImageEntity;
 
     return Scaffold(
       body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Stack(
               children: [
                 Hero(
-                  tag: photo.title,
+                  tag: image.title,
                   child: CachedNetworkImage(
-                    imageUrl: photo.hdUrl,
+                    imageUrl: image.hdUrl,
                     fit: BoxFit.cover,
-                    height: Sizing.screenHeight(context) / 2,
+                    height: 420.h,
                     width: double.infinity,
                   ),
                 ),
@@ -61,22 +63,22 @@ class _DetailScreenState extends State<DetailScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    FormatDate.format(photo.date),
-                    style: AppTextTheme.textTheme.headlineSmall?.copyWith(
+                    image.title,
+                    style: textTheme.headlineMedium,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    Helpers.formatDate(image.date),
+                    style: textTheme.bodyLarge?.copyWith(
                       color: AppColors.grey,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 16),
                   Text(
-                    photo.title,
-                    style: AppTextTheme.textTheme.headlineLarge,
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    photo.explanation,
-                    style: AppTextTheme.textTheme.bodyLarge?.copyWith(
-                      height: 1.4,
+                    image.explanation,
+                    style: textTheme.bodyLarge?.copyWith(
+                      height: 1.64,
                     ),
                   ),
                 ],

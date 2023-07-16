@@ -49,6 +49,7 @@ dependencies:
   hive: ^2.2.3
   connectivity_plus: ^4.0.1
   hive_flutter: ^1.1.0
+  flutter_screenutil: ^5.8.4
 
 dev_dependencies:
   flutter_test:

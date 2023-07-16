@@ -1,5 +1,5 @@
 import 'package:cloudwalk_assessment/app/app.dart';
-import 'package:cloudwalk_assessment/app/core/utilities/injectors/dependency_injector.dart'
+import 'package:cloudwalk_assessment/app/core/utilities/dependency_injector.dart'
     as di;
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

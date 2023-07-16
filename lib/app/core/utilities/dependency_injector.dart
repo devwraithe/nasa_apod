@@ -3,13 +3,13 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../data/datasources/datasource.dart';
-import '../../../data/datasources/datasource_impl.dart';
-import '../../../data/datasources/local_datasource_impl.dart';
-import '../../../data/repositories/repository_impl.dart';
-import '../../../domain/repositories/repository.dart';
-import '../../../domain/usecases/images_usecase.dart';
-import '../../../presentation/cubits/nasa_images/nasa_images_cubit.dart';
+import '../../data/datasources/datasource.dart';
+import '../../data/datasources/datasource_impl.dart';
+import '../../data/datasources/local_datasource_impl.dart';
+import '../../data/repositories/repository_impl.dart';
+import '../../domain/repositories/repository.dart';
+import '../../domain/usecases/images_usecase.dart';
+import '../../presentation/cubits/nasa_images/nasa_images_cubit.dart';
 
 final sl = GetIt.instance; // the service locator(sl)
 

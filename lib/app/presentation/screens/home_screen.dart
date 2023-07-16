@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:cloudwalk_assessment/app/core/theme/colors.dart';
 import 'package:cloudwalk_assessment/app/core/theme/text_theme.dart';
 import 'package:cloudwalk_assessment/app/core/utilities/constants.dart';
-import 'package:cloudwalk_assessment/app/core/utilities/date_format.dart';
+import 'package:cloudwalk_assessment/app/core/utilities/helpers.dart';
+import 'package:cloudwalk_assessment/app/core/utilities/sizing.dart';
 import 'package:cloudwalk_assessment/app/core/utilities/ui_helpers.dart';
 import 'package:cloudwalk_assessment/app/presentation/cubits/nasa_images/nasa_images_cubit.dart';
 import 'package:cloudwalk_assessment/app/presentation/widgets/custom_app_bar.dart';
@@ -12,7 +13,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../core/utilities/responsive.dart';
 import '../cubits/nasa_images/nasa_images_states.dart';
 import '../widgets/images_grid_view.dart';
 
@@ -32,11 +32,9 @@ class _HomeScreenState extends State<HomeScreen> {
   List retrievedImages = []; // for search
   int displayedImagesCount = 5; // num of images to show at once
 
-  int? myIndex;
-
   @override
   Widget build(BuildContext context) {
-    // handle pagination
+    // handle pagination - for all images and search
     final itemCount = retrievedImages.isEmpty
         ? displayedImages.length +
             (displayedImages.length < allImages.length ? 1 : 0)
@@ -61,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     key: refreshKey,
                     color: AppColors.black,
                     onRefresh: getImages,
-                    child: Responsive.isMobile(context)
+                    child: Sizing.isMobile
                         ? ImagesListView(
                             itemCount,
                             retrievedImages,
@@ -90,21 +88,21 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Text(
                       state.message,
                       textAlign: TextAlign.center,
-                      style: AppTextTheme.textTheme.bodyLarge,
+                      style: textTheme.bodyLarge,
                     ),
                   );
                 } else if (state is ImagesLoading) {
                   return const Center(
                     child: CupertinoActivityIndicator(
                       color: AppColors.black,
-                      radius: 14,
+                      radius: 12,
                     ),
                   );
                 } else {
                   return Center(
                     child: Text(
                       Constants.unknownError,
-                      style: AppTextTheme.textTheme.bodyLarge,
+                      style: textTheme.bodyLarge,
                     ),
                   );
                 }
@@ -122,24 +120,21 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // filter the images for search feature
-  Future<void> filterImages(String enteredKeyword) async {
+  Future<void> filterImages(String searchText) async {
     List images = [];
-    if (enteredKeyword.isEmpty) {
-      images = []; // less potential
+    if (searchText.isEmpty) {
+      images = [];
     } else {
       images = allImages.where((photo) {
-        final titleMatches = photo.title.toLowerCase().contains(
-              enteredKeyword.toLowerCase(),
-            );
-        final dateMatches =
-            FormatDate.format(photo.date).toLowerCase().contains(
-                  enteredKeyword.toLowerCase(),
-                );
+        final titleMatches =
+            photo.title.toLowerCase().contains(searchText.toLowerCase());
+        final dateMatches = Helpers.formatDate(photo.date)
+            .toLowerCase()
+            .contains(searchText.toLowerCase());
         return titleMatches || dateMatches;
       }).toList();
     }
 
-    // attach images filtered to retrievedImages
     setState(() => retrievedImages = images);
   }
 

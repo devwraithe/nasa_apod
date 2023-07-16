@@ -1,6 +1,5 @@
+import 'package:cloudwalk_assessment/app/core/utilities/ui_helpers.dart';
 import 'package:flutter/material.dart';
-
-import '../../core/utilities/ui_helpers.dart';
 
 class ImagesGridView extends StatelessWidget {
   final int itemCount;
@@ -12,37 +11,29 @@ class ImagesGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24),
-      child: Column(
-        children: [
-          Expanded(
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 24,
-                mainAxisSpacing: 24,
-              ),
-              itemCount: itemCount,
-              itemBuilder: (context, index) {
-                if (retrievedImages.isNotEmpty) {
-                  final image = retrievedImages[index];
-                  return UiHelpers.image(image, context);
-                } else {
-                  final image = allImages[index];
-                  if (index == displayedImages.length) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: showMoreButton,
-                    );
-                  }
-                  return UiHelpers.image(image, context);
-                }
-              },
-            ),
-          ),
-        ],
+    return GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 34,
+        mainAxisSpacing: 34,
       ),
+      shrinkWrap: true,
+      primary: true,
+      physics: const BouncingScrollPhysics(),
+      itemCount: itemCount,
+      padding: const EdgeInsets.fromLTRB(34, 8, 34, 28),
+      itemBuilder: (context, index) {
+        if (retrievedImages.isNotEmpty) {
+          final image = retrievedImages[index];
+          return UiHelpers.imageCard(image, context);
+        } else {
+          final image = allImages[index];
+          if (index == displayedImages.length) {
+            return showMoreButton;
+          }
+          return UiHelpers.imageCard(image, context);
+        }
+      },
     );
   }
 }

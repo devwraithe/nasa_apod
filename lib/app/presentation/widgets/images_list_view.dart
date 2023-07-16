@@ -15,14 +15,11 @@ class ImagesListView extends StatelessWidget {
     return ListView.builder(
       physics: const BouncingScrollPhysics(),
       itemCount: itemCount,
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 28,
-      ),
+      padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
       itemBuilder: (context, index) {
         if (retrievedImages.isNotEmpty) {
           final image = retrievedImages[index];
-          return UiHelpers.image(image, context);
+          return UiHelpers.imageCard(image, context);
         } else {
           final image = allImages[index];
           if (index == displayedImages.length) {
@@ -31,7 +28,7 @@ class ImagesListView extends StatelessWidget {
               child: showMoreButton,
             );
           }
-          return UiHelpers.image(image, context);
+          return UiHelpers.imageCard(image, context);
         }
       },
     );

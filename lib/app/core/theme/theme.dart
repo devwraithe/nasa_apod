@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static final theme = ThemeData(
     fontFamily: Constants.fontFamily,
-    textTheme: AppTextTheme.textTheme,
+    textTheme: textTheme,
     inputDecorationTheme: AppInputDecorationTheme.inputDecoration,
   );
 }
