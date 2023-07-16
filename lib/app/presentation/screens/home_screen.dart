@@ -1,19 +1,16 @@
 import 'dart:async';
 
 import 'package:cloudwalk_assessment/app/core/theme/colors.dart';
-import 'package:cloudwalk_assessment/app/core/theme/text_theme.dart';
-import 'package:cloudwalk_assessment/app/core/utilities/constants.dart';
 import 'package:cloudwalk_assessment/app/core/utilities/helpers.dart';
 import 'package:cloudwalk_assessment/app/core/utilities/sizing.dart';
 import 'package:cloudwalk_assessment/app/core/utilities/ui_helpers.dart';
-import 'package:cloudwalk_assessment/app/presentation/cubits/nasa_images/nasa_images_cubit.dart';
+import 'package:cloudwalk_assessment/app/presentation/cubits/images_cubit.dart';
 import 'package:cloudwalk_assessment/app/presentation/widgets/custom_app_bar.dart';
 import 'package:cloudwalk_assessment/app/presentation/widgets/images_list_view.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../cubits/nasa_images/nasa_images_states.dart';
+import '../cubits/images_states.dart';
 import '../widgets/images_grid_view.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -65,7 +62,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             retrievedImages,
                             allImages,
                             displayedImages,
-                            UiHelpers.showMoreButton(
+                            UiHelpers.filledButton(
+                              "Show More",
                               displayedImages.length < allImages.length
                                   ? moreImages
                                   : null,
@@ -76,7 +74,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             retrievedImages,
                             allImages,
                             displayedImages,
-                            UiHelpers.showMoreButton(
+                            UiHelpers.filledButton(
+                              "ShowMore",
                               displayedImages.length < allImages.length
                                   ? moreImages
                                   : null,
@@ -84,27 +83,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                   );
                 } else if (state is ImagesError) {
-                  return Center(
-                    child: Text(
-                      state.message,
-                      textAlign: TextAlign.center,
-                      style: textTheme.bodyLarge,
-                    ),
-                  );
+                  return UiHelpers.errorUi(() => getImages());
                 } else if (state is ImagesLoading) {
-                  return const Center(
-                    child: CupertinoActivityIndicator(
-                      color: AppColors.black,
-                      radius: 12,
-                    ),
-                  );
+                  return UiHelpers.loader();
                 } else {
-                  return Center(
-                    child: Text(
-                      Constants.unknownError,
-                      style: textTheme.bodyLarge,
-                    ),
-                  );
+                  return UiHelpers.errorUi(() => getImages());
                 }
               },
             ),

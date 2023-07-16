@@ -1,6 +1,6 @@
 import 'package:cloudwalk_assessment/app/core/routes/routes_builder.dart';
 import 'package:cloudwalk_assessment/app/core/theme/theme.dart';
-import 'package:cloudwalk_assessment/app/presentation/cubits/nasa_images/nasa_images_cubit.dart';
+import 'package:cloudwalk_assessment/app/presentation/cubits/images_cubit.dart';
 import 'package:cloudwalk_assessment/app/presentation/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

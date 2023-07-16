@@ -1,6 +1,6 @@
 import 'package:cloudwalk_assessment/app/domain/entities/image_entity.dart';
-import 'package:cloudwalk_assessment/app/presentation/cubits/nasa_images/nasa_images_cubit.dart';
-import 'package:cloudwalk_assessment/app/presentation/cubits/nasa_images/nasa_images_states.dart';
+import 'package:cloudwalk_assessment/app/presentation/cubits/images_cubit.dart';
+import 'package:cloudwalk_assessment/app/presentation/cubits/nasa_images/images_states.dart';
 import 'package:cloudwalk_assessment/app/presentation/screens/home_screen.dart';
 import 'package:cloudwalk_assessment/app/presentation/widgets/search_field.dart';
 import 'package:flutter/material.dart';

@@ -1,8 +1,8 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:cloudwalk_assessment/app/core/utilities/errors/failure.dart';
 import 'package:cloudwalk_assessment/app/domain/entities/image_entity.dart';
-import 'package:cloudwalk_assessment/app/presentation/cubits/nasa_images/nasa_images_cubit.dart';
-import 'package:cloudwalk_assessment/app/presentation/cubits/nasa_images/nasa_images_states.dart';
+import 'package:cloudwalk_assessment/app/presentation/cubits/images_cubit.dart';
+import 'package:cloudwalk_assessment/app/presentation/cubits/nasa_images/images_states.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';

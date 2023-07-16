@@ -9,11 +9,14 @@ import 'package:http/http.dart';
 
 import '../../core/utilities/constants.dart';
 import '../../core/utilities/errors/exceptions.dart';
-import 'datasource.dart';
 
-class DataSourceImpl implements DataSource {
+abstract class RemoteDataSource {
+  Future<List<ImageModel>> getImages();
+}
+
+class RemoteDataSourceImpl implements RemoteDataSource {
   final Client client;
-  const DataSourceImpl(this.client);
+  const RemoteDataSourceImpl(this.client);
 
   @override
   Future<List<ImageModel>> getImages() async {

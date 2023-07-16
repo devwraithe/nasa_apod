@@ -11,7 +11,7 @@ import 'package:cloudwalk_assessment/app/core/utilities/errors/failure.dart'
     as _i12;
 import 'package:cloudwalk_assessment/app/data/datasources/datasource.dart'
     as _i4;
-import 'package:cloudwalk_assessment/app/data/datasources/datasource_impl.dart'
+import 'package:cloudwalk_assessment/app/data/datasources/remote_datasource.dart'
     as _i16;
 import 'package:cloudwalk_assessment/app/data/models/image_model.dart' as _i15;
 import 'package:cloudwalk_assessment/app/data/repositories/repository_impl.dart'
@@ -22,9 +22,9 @@ import 'package:cloudwalk_assessment/app/domain/repositories/repository.dart'
     as _i2;
 import 'package:cloudwalk_assessment/app/domain/usecases/images_usecase.dart'
     as _i10;
-import 'package:cloudwalk_assessment/app/presentation/cubits/nasa_images/nasa_images_cubit.dart'
+import 'package:cloudwalk_assessment/app/presentation/cubits/images_cubit.dart'
     as _i20;
-import 'package:cloudwalk_assessment/app/presentation/cubits/nasa_images/nasa_images_states.dart'
+import 'package:cloudwalk_assessment/app/presentation/cubits/nasa_images/images_states.dart'
     as _i6;
 import 'package:dartz/dartz.dart' as _i3;
 import 'package:flutter/foundation.dart' as _i9;
@@ -209,22 +209,24 @@ class MockRepository extends _i1.Mock implements _i2.Repository {
   }
 
   @override
-  _i11.Future<_i3.Either<_i12.Failure, List<_i13.ImageEntity>>>
-      getImagesRepo() => (super.noSuchMethod(
-            Invocation.method(
-              #getImagesRepo,
-              [],
-            ),
-            returnValue: _i11
-                .Future<_i3.Either<_i12.Failure, List<_i13.ImageEntity>>>.value(
+  _i11.Future<
+      _i3
+          .Either<_i12.Failure, List<_i13.ImageEntity>>> getImagesRepo() =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getImagesRepo,
+          [],
+        ),
+        returnValue:
+            _i11.Future<_i3.Either<_i12.Failure, List<_i13.ImageEntity>>>.value(
                 _FakeEither_1<_i12.Failure, List<_i13.ImageEntity>>(
-              this,
-              Invocation.method(
-                #getImagesRepo,
-                [],
-              ),
-            )),
-          ) as _i11.Future<_i3.Either<_i12.Failure, List<_i13.ImageEntity>>>);
+          this,
+          Invocation.method(
+            #getImagesRepo,
+            [],
+          ),
+        )),
+      ) as _i11.Future<_i3.Either<_i12.Failure, List<_i13.ImageEntity>>>);
 }
 
 /// A class which mocks [RepositoryImpl].
@@ -244,22 +246,24 @@ class MockRepositoryImpl extends _i1.Mock implements _i14.RepositoryImpl {
         ),
       ) as _i4.DataSource);
   @override
-  _i11.Future<_i3.Either<_i12.Failure, List<_i13.ImageEntity>>>
-      getImagesRepo() => (super.noSuchMethod(
-            Invocation.method(
-              #getImagesRepo,
-              [],
-            ),
-            returnValue: _i11
-                .Future<_i3.Either<_i12.Failure, List<_i13.ImageEntity>>>.value(
+  _i11.Future<
+      _i3
+          .Either<_i12.Failure, List<_i13.ImageEntity>>> getImagesRepo() =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getImagesRepo,
+          [],
+        ),
+        returnValue:
+            _i11.Future<_i3.Either<_i12.Failure, List<_i13.ImageEntity>>>.value(
                 _FakeEither_1<_i12.Failure, List<_i13.ImageEntity>>(
-              this,
-              Invocation.method(
-                #getImagesRepo,
-                [],
-              ),
-            )),
-          ) as _i11.Future<_i3.Either<_i12.Failure, List<_i13.ImageEntity>>>);
+          this,
+          Invocation.method(
+            #getImagesRepo,
+            [],
+          ),
+        )),
+      ) as _i11.Future<_i3.Either<_i12.Failure, List<_i13.ImageEntity>>>);
 }
 
 /// A class which mocks [DataSource].

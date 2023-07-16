@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloudwalk_assessment/app/core/utilities/helpers.dart';
+import 'package:cloudwalk_assessment/app/core/utilities/ui_helpers.dart';
 import 'package:cloudwalk_assessment/app/domain/entities/image_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -31,7 +32,7 @@ class _DetailScreenState extends State<DetailScreen> {
                 Hero(
                   tag: image.title,
                   child: CachedNetworkImage(
-                    imageUrl: image.hdUrl,
+                    imageUrl: image.imgUrl,
                     fit: BoxFit.cover,
                     height: 420.h,
                     width: double.infinity,
@@ -80,6 +81,11 @@ class _DetailScreenState extends State<DetailScreen> {
                     style: textTheme.bodyLarge?.copyWith(
                       height: 1.64,
                     ),
+                  ),
+                  const SizedBox(height: 28),
+                  UiHelpers.filledButton(
+                    "Go Back",
+                    () => Navigator.pop(context),
                   ),
                 ],
               ),
