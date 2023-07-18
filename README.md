@@ -28,7 +28,7 @@ This project utilizes environment variables to manage configuration settings. I 
 
 To set up the required environment variables for this project, please refer to the Envied documentation:
 
-Visit the [Envied](https://pub.dev/packages/envied) package documentation on [pub.dev](pub.dev).
+Visit the [Envied](https://pub.dev/packages/envied) package documentation on [pub.dev](https://www.pub.dev).
 Follow the instructions provided in the documentation to install and configure Envied for your development environment.
 Envied simplifies the management of environment variables and ensures consistent and secure handling of sensitive information. Make sure to set the required environment variables as specified in the project's configuration files.
 
