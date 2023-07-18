@@ -21,6 +21,7 @@ class ImageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 30),
+      height: 310,
       child: GestureDetector(
         onTap: onTap,
         child: Column(

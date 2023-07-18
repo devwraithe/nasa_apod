@@ -1,36 +1,23 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Sizing {
-  static screenHeight(BuildContext context) {
-    return MediaQuery.of(context).size.height;
-  }
+  // static bool isMobile = false;
+  // static double _screenWidth = 0;
+  //
+  // static void initialize(BuildContext context) {
+  //   _screenWidth = MediaQuery.of(context).size.width;
+  //   isMobile = _screenWidth < 600;
+  // }
 
-  static screenWidth(BuildContext context) {
-    return MediaQuery.of(context).size.width;
-  }
+  static bool isMobile = ScreenUtil().screenWidth < 600;
 
-  // check if device is mobile
-  static final isMobile = ScreenUtil().screenWidth < 600;
+  static double headlineLarge = isMobile ? 26.sp : 20.sp;
 
-  // text responsiveness
-  static double headlineLarge() {
-    return isMobile ? 26.sp : 20.sp;
-  }
+  static double headlineMedium = isMobile ? 20.sp : 14.sp;
 
-  static double headlineMedium() {
-    return isMobile ? 20.sp : 14.sp;
-  }
+  static double headlineSmall = isMobile ? 18.sp : 12.sp;
 
-  static double headlineSmall() {
-    return isMobile ? 18.sp : 12.sp;
-  }
+  static double bodyLarge = isMobile ? 16.sp : 10.sp;
 
-  static double bodyLarge() {
-    return isMobile ? 16.sp : 10.sp;
-  }
-
-  static double bodyMedium() {
-    return isMobile ? 14.sp : 8.sp;
-  }
+  static double bodyMedium = isMobile ? 14.sp : 8.sp;
 }

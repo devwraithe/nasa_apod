@@ -42,27 +42,27 @@ class _HomeScreenState extends State<HomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomAppBar(onChanged: (value) => filterImages(value)),
-          Expanded(
-            child: BlocConsumer<ImagesCubit, ImagesStates>(
-              listener: (context, state) {
-                if (state is ImagesLoaded) {
-                  setState(() => allImages = state.result);
-                  displayedImages.length < 5 ? moreImages() : null;
-                }
-              },
-              builder: (context, state) {
-                if (state is ImagesLoaded) {
-                  return RefreshIndicator(
+          BlocConsumer<ImagesCubit, ImagesStates>(
+            listener: (context, state) {
+              if (state is ImagesLoaded) {
+                setState(() => allImages = state.result);
+                displayedImages.length < 5 ? moreImages() : null;
+              }
+            },
+            builder: (context, state) {
+              if (state is ImagesLoaded) {
+                return Flexible(
+                  child: RefreshIndicator(
                     key: refreshKey,
                     color: AppColors.black,
                     onRefresh: getImages,
                     child: Sizing.isMobile
                         ? ImagesListView(
-                            itemCount,
-                            retrievedImages,
-                            allImages,
-                            displayedImages,
-                            UiHelpers.filledButton(
+                            itemCount: itemCount,
+                            retrievedImages: retrievedImages,
+                            allImages: allImages,
+                            displayedImages: displayedImages,
+                            showMoreButton: UiHelpers.filledButton(
                               "Show More",
                               displayedImages.length < allImages.length
                                   ? moreImages
@@ -70,27 +70,27 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           )
                         : ImagesGridView(
-                            itemCount,
-                            retrievedImages,
-                            allImages,
-                            displayedImages,
-                            UiHelpers.filledButton(
+                            itemCount: itemCount,
+                            retrievedImages: retrievedImages,
+                            allImages: allImages,
+                            displayedImages: displayedImages,
+                            showMoreButton: UiHelpers.filledButton(
                               "ShowMore",
                               displayedImages.length < allImages.length
                                   ? moreImages
                                   : null,
                             ),
                           ),
-                  );
-                } else if (state is ImagesError) {
-                  return UiHelpers.errorUi(() => getImages());
-                } else if (state is ImagesLoading) {
-                  return UiHelpers.loader();
-                } else {
-                  return UiHelpers.errorUi(() => getImages());
-                }
-              },
-            ),
+                  ),
+                );
+              } else if (state is ImagesError) {
+                return UiHelpers.errorUi(() => getImages());
+              } else if (state is ImagesLoading) {
+                return UiHelpers.loader();
+              } else {
+                return UiHelpers.errorUi(() => getImages());
+              }
+            },
           ),
         ],
       ),

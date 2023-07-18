@@ -1,23 +1,24 @@
 import 'package:cloudwalk_assessment/app/app.dart';
 import 'package:cloudwalk_assessment/app/core/utilities/dependency_injector.dart'
     as di;
-import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('should initialize the app', (WidgetTester tester) async {
-    // Ensure Flutter is initialized.
-    WidgetsFlutterBinding.ensureInitialized();
+  testWidgets('should initialize the app', (tester) async {
+    // ensure the test environment is initialized
+    TestWidgetsFlutterBinding.ensureInitialized();
 
-    // Initialize the dependency injector.
+    // initialize the dependency injector
     di.init();
 
-    // Build the app and trigger a frame.
-    await tester.pumpWidget(const CloudwalkAssessment());
+    // ensure the screen size is available for responsive UI testing
+    await ScreenUtil.ensureScreenSize();
 
-    // Perform any additional assertions or verifications if needed.
-    // For example, you can use `find` to locate widgets and verify their presence.
-
-    // ...
+    // pump the widget tree
+    await tester.pumpWidget(
+      // build the cloudwalk assessment app
+      const CloudwalkAssessment(),
+    );
   });
 }

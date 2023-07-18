@@ -118,8 +118,12 @@ class UiHelpers {
   }
 
   static loader() {
-    return const Center(
-      child: CupertinoActivityIndicator(
+    return Container(
+      padding: EdgeInsets.symmetric(
+        vertical: 50.w,
+      ),
+      width: double.infinity,
+      child: const CupertinoActivityIndicator(
         color: AppColors.black,
         radius: 12,
       ),

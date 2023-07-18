@@ -9,9 +9,12 @@ abstract class LocalDataSource {
 }
 
 class LocalDataSourceImpl implements LocalDataSource {
+  final HiveInterface hiveInterface;
+  const LocalDataSourceImpl(this.hiveInterface);
+
   @override
   Future<void> storeImages(List<ImageEntity> images) async {
-    final box = await Hive.openBox<ImageEntity>('images');
+    final box = await hiveInterface.openBox('images');
     debugPrint("[Caching in Hive for Offline Support]...");
     await box.clear();
     for (final image in images) {
@@ -23,7 +26,7 @@ class LocalDataSourceImpl implements LocalDataSource {
 
   @override
   Future<List<ImageEntity>> retrieveImages() async {
-    final box = await Hive.openBox('images');
+    final box = await hiveInterface.openBox('images');
     debugPrint("[Retrieving Data Cache from Hive]...");
     final dynamicList = box.values.toList();
     final images = dynamicList.cast<ImageEntity>().toList();
