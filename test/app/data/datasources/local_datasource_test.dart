@@ -1,60 +1,110 @@
-import 'package:cloudwalk_assessment/app/data/datasources/local_datasource.dart';
+import 'package:cloudwalk_assessment/app/core/utilities/errors/failure.dart';
 import 'package:cloudwalk_assessment/app/domain/entities/image_entity.dart';
+import 'package:cloudwalk_assessment/app/domain/usecases/images_usecase.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mockito/mockito.dart';
-import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 
-import '../../core/utilities/path_provider_mock.dart';
 import '../../core/utilities/test_helper.mocks.dart';
 
 void main() {
-  TestWidgetsFlutterBinding.ensureInitialized();
+  late ImagesUsecase usecase;
+  late MockRepository mockRepository;
 
-  late MockBox mockHiveBox;
-  late MockHiveInterface mockHiveInterface;
-  late LocalDataSourceImpl dataSource;
-
-  setUpAll(() async {
-    PathProviderPlatform.instance = FakePathProviderPlatform();
-    await Hive.initFlutter();
-    mockHiveBox = MockBox();
-    mockHiveInterface = MockHiveInterface();
-    dataSource = LocalDataSourceImpl(mockHiveInterface);
+  // set up the test environment by creating a mock repository instance
+  setUp(() {
+    mockRepository = MockRepository();
+    usecase = ImagesUsecase(mockRepository);
   });
 
-  const mockImages = [
-    ImageEntity(
+  // define a list of mock ImageEntity objects for testing
+  final mockImages = [
+    const ImageEntity(
       title: 'Image 1',
-      date: '01 Jan 2021',
-      explanation: 'Explanation 1',
-      imgUrl: 'img_url_1',
+      date: '2023-07-12',
+      explanation: 'This is image 1',
+      imgUrl: 'https://example.com/image1.jpg',
     ),
-    ImageEntity(
+    const ImageEntity(
       title: 'Image 2',
-      date: '02 Jan 2021',
-      explanation: 'Explanation 2',
-      imgUrl: 'img_url_2',
+      date: '2023-07-15',
+      explanation: 'This is image 2',
+      imgUrl: 'https://example.com/image2.jpg',
     ),
   ];
 
-  test('should store images in Hive for offline support', () async {
-    when(mockHiveInterface.openBox('images')).thenAnswer(
-      (_) async => mockHiveBox,
+  // test case: should return a list of ImageEntity on successful response
+  test('should return a list of ImageEntity on successful response', () async {
+    // set up the mock behavior of the repository's getImagesRepo method
+    when(mockRepository.getImagesRepo()).thenAnswer(
+      (_) async => Right(mockImages),
     );
-    when(mockHiveBox.clear()).thenAnswer((_) async => 1);
-    dataSource.storeImages(mockImages);
-    verify(mockHiveInterface.openBox<ImageEntity>('images'));
+
+    // call the use case's getImages method and store the result
+    final result = await usecase.getImages();
+
+    // verify that the result is equal to Right(mockImages)
+    expect(result, equals(Right(mockImages)));
+
+    // verify that the repository's getImagesRepo method is called once
+    verify(mockRepository.getImagesRepo()).called(1);
+
+    // verify that there are no more interactions with the mock repository
+    verifyNoMoreInteractions(mockRepository);
   });
 
-  test("should retrieve cached data from Hive", () async {
-    when(mockHiveInterface.openBox('images')).thenAnswer(
-      (_) async => mockHiveBox,
+  // test case: should return a Failure when repository returns a Left
+  test('should return a Failure when repository returns a Left', () async {
+    // create a mock Failure instance
+    const failure = Failure('Test failure');
+
+    // set up the mock behavior of the repository's getImagesRepo method
+    when(mockRepository.getImagesRepo()).thenAnswer(
+      (_) async => const Left(failure),
     );
-    when(mockHiveBox.values.toList()).thenReturn(mockImages);
-    final result = await dataSource.retrieveImages();
-    verify(mockHiveInterface.openBox<ImageEntity>('images'));
+
+    // call the use case's getImages method and store the result
+    final result = await usecase.getImages();
+
+    // verify that the result is equal to Left(failure)
+    expect(result, equals(const Left(failure)));
+
+    // verify that the repository's getImagesRepo method is called once
+    verify(mockRepository.getImagesRepo()).called(1);
+
+    // verify that there are no more interactions with the mock repository
+    verifyNoMoreInteractions(mockRepository);
+  });
+
+  // test case: should update the local database with given images
+  test('should update the local database with given images', () async {
+    // call the use case's updateLocalDatabase method with the mock images
+    await usecase.updateLocalDatabase(mockImages);
+
+    // verify that the repository's updateLocalDatabase method is called once
+    verify(mockRepository.updateLocalDatabase(mockImages)).called(1);
+
+    // verify that there are no more interactions with the mock repository
+    verifyNoMoreInteractions(mockRepository);
+  });
+
+  // test case: should retrieve cached images successfully
+  test('should retrieve cached images successfully', () async {
+    // set up the mock behavior of the repository's getCachedImages method
+    when(mockRepository.getCachedImages()).thenAnswer(
+      (_) async => mockImages,
+    );
+
+    // call the use case's getCachedImages method and store the result
+    final result = await usecase.getCachedImages();
+
+    // verify that the result is equal to the mock images
     expect(result, equals(mockImages));
-    verify(mockHiveBox.close());
+
+    // verify that the repository's getCachedImages method is called once
+    verify(mockRepository.getCachedImages()).called(1);
+
+    // verify that there are no more interactions with the mock repository
+    verifyNoMoreInteractions(mockRepository);
   });
 }

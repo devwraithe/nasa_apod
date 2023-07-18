@@ -7,10 +7,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  // test case: Builds ImageCard widget with correct data
   testWidgets(
     'Builds ImageCard widget with correct data',
     (tester) async {
-      // Define the image entity
+      // define the image entity
       const image = ImageEntity(
         title: 'Image Title',
         date: '2022-01-01',
@@ -18,6 +19,7 @@ void main() {
         imgUrl: 'https://example.com/image.jpg',
       );
 
+      // pump the ImageCard widget using ScreenUtilInit and MaterialApp
       await tester.pumpWidget(
         ScreenUtilInit(builder: (context, child) {
           return MaterialApp(
@@ -30,16 +32,18 @@ void main() {
         }),
       );
 
-      // Verify that the ImageCard widget is built correctly
+      // verify that the ImageCard widget is built correctly
       expect(find.byType(ImageCard), findsOneWidget);
       expect(find.text('Image Title'), findsOneWidget);
       expect(find.text('01 January 2022'), findsOneWidget);
     },
   );
 
+  // test case: Builds the FilledButton widget
   testWidgets(
     'Build the FilledButton',
     (tester) async {
+      // pump the FilledButton widget using ScreenUtilInit and MaterialApp
       await tester.pumpWidget(
         ScreenUtilInit(builder: (context, child) {
           return MaterialApp(
@@ -50,14 +54,16 @@ void main() {
         }),
       );
 
-      // Verify that the FilledButton widget is built correctly
+      // verify that the FilledButton widget is built correctly
       expect(find.byType(FilledButton), findsOneWidget);
     },
   );
 
+  // test case: Builds the ActivityIndicator widget
   testWidgets(
     'Build the ActivityIndicator',
     (tester) async {
+      // pump the ActivityIndicator widget using ScreenUtilInit and MaterialApp
       await tester.pumpWidget(
         ScreenUtilInit(builder: (context, child) {
           return MaterialApp(
@@ -70,7 +76,7 @@ void main() {
         }),
       );
 
-      // Verify that the ActivityIndicator is built correctly
+      // verify that the ActivityIndicator is built correctly
       expect(find.byType(CupertinoActivityIndicator), findsOneWidget);
     },
   );

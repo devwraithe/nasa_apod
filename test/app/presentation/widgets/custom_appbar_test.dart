@@ -7,6 +7,7 @@ void main() {
   testWidgets('renders CustomAppBar correctly', (tester) async {
     String? searchText;
 
+    // pump the widget tree
     await tester.pumpWidget(
       ScreenUtilInit(builder: (context, child) {
         return MaterialApp(
@@ -21,10 +22,14 @@ void main() {
       }),
     );
 
+    // verify widget with title "Astronomia 🚀" is rendered
     expect(find.text("Astronomia 🚀"), findsOneWidget);
 
+    // verify the search field is rendered
     final searchFieldFinder = find.byType(TextField);
     expect(searchFieldFinder, findsOneWidget);
+
+    // enter text in the search field and verify if searchText is updated
     await tester.enterText(searchFieldFinder, "Test search");
     expect(searchText, "Test search");
   });

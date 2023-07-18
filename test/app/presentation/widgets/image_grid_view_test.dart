@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  // list of mock images
   final images = [
     const ImageEntity(
       title: "Image 1",
@@ -28,6 +29,7 @@ void main() {
         child: const Text('Show More'),
       );
 
+      // pump the widget tree
       await tester.pumpWidget(
         ScreenUtilInit(
           builder: (context, child) {
@@ -46,6 +48,7 @@ void main() {
         ),
       );
 
+      // verify the GridView widget is rendered
       expect(find.byType(GridView), findsOneWidget);
     },
   );

@@ -15,12 +15,14 @@ void main() {
       imgUrl: 'https://example.com/image.jpg',
     );
 
+    // render the widget tree
     await tester.pumpWidget(
       ScreenUtilInit(
         builder: (context, child) {
           return MaterialApp(
             home: Builder(
               builder: (context) {
+                // create a button that navigates to DetailScreen
                 return MaterialButton(
                   onPressed: () {
                     Navigator.pushNamed(
@@ -41,17 +43,23 @@ void main() {
       ),
     );
 
+    // Tap the button to navigate to DetailScreen
     await tester.tap(find.text('Go to DetailScreen'));
     await tester.pumpAndSettle();
 
+    // verify that DetailScreen widget is rendered
     expect(find.byType(DetailScreen), findsOneWidget);
 
+    // verify that CachedNetworkImage widget is rendered
     expect(find.byType(CachedNetworkImage), findsOneWidget);
 
+    // verify the presence of image title
     expect(find.text(image.title), findsOneWidget);
 
+    // verify the presence of image date
     expect(find.text(image.explanation), findsOneWidget);
 
+    // verify the presence of 'Go Back' text
     expect(find.text('Go Back'), findsOneWidget);
   });
 }

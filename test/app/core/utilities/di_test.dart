@@ -12,15 +12,18 @@ import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 
 void main() {
+  // create an instance of GetIt for dependency injection
   late GetIt sl;
 
+  // set up the GetIt instance before each test
   setUp(() => sl = GetIt.instance);
 
+  // test case: Should register the necessary dependencies
   test('Should register the necessary dependencies', () {
-    // Call the init() method to register the dependencies
+    // call the init() method to register the dependencies
     di.init();
 
-    // Verify that the dependencies are registered correctly
+    // verify that the dependencies are registered correctly
     expect(sl.isRegistered<ImagesCubit>(), isTrue);
     expect(sl.isRegistered<Connectivity>(), isTrue);
     expect(sl.isRegistered<ImagesUsecase>(), isTrue);
@@ -30,7 +33,7 @@ void main() {
     expect(sl.isRegistered<HiveInterface>(), isTrue);
     expect(sl.isRegistered<http.Client>(), isTrue);
 
-    // Verify the types of the registered dependencies
+    // verify the types of the registered dependencies
     expect(sl<ImagesCubit>(), isA<ImagesCubit>());
     expect(sl<Connectivity>(), isA<Connectivity>());
     expect(sl<ImagesUsecase>(), isA<ImagesUsecase>());

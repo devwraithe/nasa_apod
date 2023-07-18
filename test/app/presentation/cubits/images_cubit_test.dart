@@ -11,20 +11,24 @@ import 'package:mockito/mockito.dart';
 import '../../core/utilities/test_helper.mocks.dart';
 
 void main() {
+  // create instances of necessary dependencies and the cubit under test
   late ImagesCubit imagesCubit;
   late MockImagesUsecase mockImagesUsecase;
   late MockConnectivity mockConnectivity;
 
   setUp(() {
+    // set up the necessary dependencies and the cubit instance
     mockImagesUsecase = MockImagesUsecase();
     mockConnectivity = MockConnectivity();
     imagesCubit = ImagesCubit(mockImagesUsecase, mockConnectivity);
   });
 
   tearDown(() {
+    // close the cubit after each test
     imagesCubit.close();
   });
 
+  // create a test image entity for reuse
   const testImage = ImageEntity(
     title: 'Test Movie 1',
     date: '01 June 2023',
@@ -32,6 +36,7 @@ void main() {
     imgUrl: 'http://www.example1.com',
   );
 
+  // test the initial state of the cubit
   test(
     'initial state should be empty',
     () => expect(
@@ -40,9 +45,11 @@ void main() {
     ),
   );
 
+  // test the behavior when internet is available and usecase returns images
   blocTest<ImagesCubit, ImagesStates>(
     'emits ImagesLoaded when internet is available and usecase returns images',
     setUp: () {
+      // set up the mock behavior for usecase and connectivity
       when(mockImagesUsecase.getImages()).thenAnswer(
         (_) async => const Right([testImage]),
       );
@@ -61,9 +68,11 @@ void main() {
     ],
   );
 
+  // test the behavior when internet is unavailable and cached images are available
   blocTest<ImagesCubit, ImagesStates>(
     'emits ImagesLoaded with cached images when internet is unavailable',
     setUp: () {
+      // set up the mock behavior for usecase and connectivity
       when(mockImagesUsecase.getCachedImages()).thenAnswer(
         (_) async => [testImage],
       );
@@ -79,9 +88,11 @@ void main() {
     ],
   );
 
+  // test the behavior when usecase returns a failure
   blocTest<ImagesCubit, ImagesStates>(
     'emits ImagesError when usecase returns a failure',
     setUp: () {
+      // set up the mock behavior for usecase and connectivity
       when(mockConnectivity.checkConnectivity()).thenAnswer(
         (_) async => ConnectivityResult.wifi,
       );

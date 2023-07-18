@@ -28,6 +28,7 @@ void main() {
         child: const Text('Show More'),
       );
 
+      // pump the widget tree
       await tester.pumpWidget(
         ScreenUtilInit(builder: (context, child) {
           return MaterialApp(
@@ -44,6 +45,7 @@ void main() {
         }),
       );
 
+      // verify the ListView widget is rendered
       expect(find.byType(ListView), findsOneWidget);
     },
   );

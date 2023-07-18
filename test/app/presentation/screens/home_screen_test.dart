@@ -14,11 +14,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() async {
+  // ensure the test environment is initialized
   TestWidgetsFlutterBinding.ensureInitialized();
 
+  // initialize the dependency injector
   di.init();
 
   testWidgets('renders CustomAppBar and ImagesListView', (tester) async {
+    // render the widget tree
     await tester.pumpWidget(
       MultiBlocProvider(
         providers: [
@@ -36,6 +39,7 @@ void main() async {
       ),
     );
 
+    // verify the CustomAppBar widget is rendered
     expect(find.byType(CustomAppBar), findsOneWidget);
   });
 
@@ -56,6 +60,7 @@ void main() async {
       ),
     ];
 
+    // render the widget tree with ImageListView and it's dependencies
     await tester.pumpWidget(
       ScreenUtilInit(builder: (context, child) {
         return MaterialApp(
@@ -86,8 +91,11 @@ void main() async {
       }),
     );
 
+    // verify that the RefreshIndicator and ImagesListView widgets are rendered
     expect(find.byKey(const Key('refreshIndicator')), findsOneWidget);
+    // verify that the ImagesListView widget is rendered
     expect(find.byType(ImagesListView), findsOneWidget);
+    // verify that the ImagesGridView widget is not rendered
     expect(find.byType(ImagesGridView), findsNothing);
   });
 
@@ -108,6 +116,7 @@ void main() async {
       ),
     ];
 
+    // render the widget tree with the ImagesGridView widget and its dependencies
     await tester.pumpWidget(
       ScreenUtilInit(builder: (context, child) {
         return MaterialApp(
@@ -138,8 +147,11 @@ void main() async {
       }),
     );
 
+    // verify that the RefreshIndicator widget is rendered
     expect(find.byKey(const Key('refreshIndicator')), findsOneWidget);
+    // verify that the ImagesListView widget is not rendered
     expect(find.byType(ImagesListView), findsNothing);
+    // verify that the ImagesGridView widget is rendered
     expect(find.byType(ImagesGridView), findsOneWidget);
   });
 }

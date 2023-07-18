@@ -11,11 +11,13 @@ void main() {
   late ImagesUsecase usecase;
   late MockRepository mockRepository;
 
+  // set up the test environment by creating a mock repository instance
   setUp(() {
     mockRepository = MockRepository();
     usecase = ImagesUsecase(mockRepository);
   });
 
+  // define a list of mock ImageEntity objects for testing
   final mockImages = [
     const ImageEntity(
       title: 'Image 1',
@@ -31,48 +33,78 @@ void main() {
     ),
   ];
 
+  // test case: should return a list of ImageEntity on successful response
   test('should return a list of ImageEntity on successful response', () async {
+    // set up the mock behavior of the repository's getImagesRepo method
     when(mockRepository.getImagesRepo()).thenAnswer(
       (_) async => Right(mockImages),
     );
 
+    // call the use case's getImages method and store the result
     final result = await usecase.getImages();
 
+    // verify that the result is equal to Right(mockImages)
     expect(result, equals(Right(mockImages)));
+
+    // verify that the repository's getImagesRepo method is called once
     verify(mockRepository.getImagesRepo()).called(1);
+
+    // verify that there are no more interactions with the mock repository
     verifyNoMoreInteractions(mockRepository);
   });
 
+  // test case: should return a Failure when repository returns a Left
   test('should return a Failure when repository returns a Left', () async {
+    // create a mock Failure instance
     const failure = Failure('Test failure');
+
+    // set up the mock behavior of the repository's getImagesRepo method
     when(mockRepository.getImagesRepo()).thenAnswer(
       (_) async => const Left(failure),
     );
 
+    // call the use case's getImages method and store the result
     final result = await usecase.getImages();
 
+    // verify that the result is equal to Left(failure)
     expect(result, equals(const Left(failure)));
+
+    // verify that the repository's getImagesRepo method is called once
     verify(mockRepository.getImagesRepo()).called(1);
+
+    // verify that there are no more interactions with the mock repository
     verifyNoMoreInteractions(mockRepository);
   });
 
+  // test case: should update the local database with given images
   test('should update the local database with given images', () async {
+    // call the use case's updateLocalDatabase method with the mock images
     await usecase.updateLocalDatabase(mockImages);
 
+    // verify that the repository's updateLocalDatabase method is called once
     verify(mockRepository.updateLocalDatabase(mockImages)).called(1);
+
+    // verify that there are no more interactions with the mock repository
     verifyNoMoreInteractions(mockRepository);
   });
 
+  // test case: should retrieve cached images successfully
   test('should retrieve cached images successfully', () async {
+    // set up the mock behavior of the repository's getCachedImages method
     when(mockRepository.getCachedImages()).thenAnswer(
       (_) async => mockImages,
     );
 
+    // call the use case's getCachedImages method and store the result
     final result = await usecase.getCachedImages();
 
+    // verify that the result is equal to the mock images
     expect(result, equals(mockImages));
 
+    // verify that the repository's getCachedImages method is called once
     verify(mockRepository.getCachedImages()).called(1);
+
+    // verify that there are no more interactions with the mock repository
     verifyNoMoreInteractions(mockRepository);
   });
 }
