@@ -5,9 +5,14 @@ class ImagesGridView extends StatelessWidget {
   final int itemCount;
   final List retrievedImages, allImages, displayedImages;
   final Widget showMoreButton;
-  const ImagesGridView(this.itemCount, this.retrievedImages, this.allImages,
-      this.displayedImages, this.showMoreButton,
-      {super.key});
+  const ImagesGridView({
+    super.key,
+    required this.itemCount,
+    required this.retrievedImages,
+    required this.allImages,
+    required this.displayedImages,
+    required this.showMoreButton,
+  });
 
   @override
   Widget build(BuildContext context) {

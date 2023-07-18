@@ -4,9 +4,9 @@ import 'package:dartz/dartz.dart';
 import '../../core/utilities/errors/failure.dart';
 import '../entities/image_entity.dart';
 
-class NasaImagesUsecase {
+class ImagesUsecase {
   final Repository repo;
-  NasaImagesUsecase(this.repo);
+  ImagesUsecase(this.repo);
 
   Future<Either<Failure, List<ImageEntity>>> getImages() async {
     final result = await repo.getImagesRepo();

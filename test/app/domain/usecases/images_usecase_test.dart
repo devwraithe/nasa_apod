@@ -5,47 +5,74 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../core/helpers/test_helper.mocks.dart';
+import '../../core/utilities/test_helper.mocks.dart';
 
 void main() {
-  late NasaImagesUsecase usecase;
+  late ImagesUsecase usecase;
   late MockRepository mockRepository;
 
   setUp(() {
     mockRepository = MockRepository();
-    usecase = NasaImagesUsecase(mockRepository);
+    usecase = ImagesUsecase(mockRepository);
   });
 
+  final mockImages = [
+    const ImageEntity(
+      title: 'Image 1',
+      date: '2023-07-12',
+      explanation: 'This is image 1',
+      imgUrl: 'https://example.com/image1.jpg',
+    ),
+    const ImageEntity(
+      title: 'Image 2',
+      date: '2023-07-15',
+      explanation: 'This is image 2',
+      imgUrl: 'https://example.com/image2.jpg',
+    ),
+  ];
+
   test('should return a list of ImageEntity on successful response', () async {
-    // Arrange
-    final imageEntities = <ImageEntity>[
-      /* create your test ImageEntity objects */
-    ];
-    when(mockRepository.getImagesRepo())
-        .thenAnswer((_) async => Right(imageEntities));
+    when(mockRepository.getImagesRepo()).thenAnswer(
+      (_) async => Right(mockImages),
+    );
 
-    // Act
-    final result = await usecase.execute();
+    final result = await usecase.getImages();
 
-    // Assert
-    expect(result, equals(Right(imageEntities)));
+    expect(result, equals(Right(mockImages)));
     verify(mockRepository.getImagesRepo()).called(1);
     verifyNoMoreInteractions(mockRepository);
   });
 
   test('should return a Failure when repository returns a Left', () async {
-    // Arrange
-    final failure = Failure('Test failure');
-    when(mockRepository.getImagesRepo()).thenAnswer((_) async => Left(failure));
+    const failure = Failure('Test failure');
+    when(mockRepository.getImagesRepo()).thenAnswer(
+      (_) async => const Left(failure),
+    );
 
-    // Act
-    final result = await usecase.execute();
+    final result = await usecase.getImages();
 
-    // Assert
-    expect(result, equals(Left(failure)));
+    expect(result, equals(const Left(failure)));
     verify(mockRepository.getImagesRepo()).called(1);
     verifyNoMoreInteractions(mockRepository);
   });
 
-  // Add more test cases as needed
+  test('should update the local database with given images', () async {
+    await usecase.updateLocalDatabase(mockImages);
+
+    verify(mockRepository.updateLocalDatabase(mockImages)).called(1);
+    verifyNoMoreInteractions(mockRepository);
+  });
+
+  test('should retrieve cached images successfully', () async {
+    when(mockRepository.getCachedImages()).thenAnswer(
+      (_) async => mockImages,
+    );
+
+    final result = await usecase.getCachedImages();
+
+    expect(result, equals(mockImages));
+
+    verify(mockRepository.getCachedImages()).called(1);
+    verifyNoMoreInteractions(mockRepository);
+  });
 }

@@ -8,11 +8,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  // Initialize the dependencies before running the test.
   di.init();
 
   testWidgets('should build the app', (WidgetTester tester) async {
-    // Build the widget tree.
     await tester.pumpWidget(
       MultiBlocProvider(
         providers: [
@@ -26,7 +24,6 @@ void main() {
       ),
     );
 
-    // Verify that the `HomeScreen` widget is present.
     expect(find.byType(HomeScreen), findsOneWidget);
   });
 }

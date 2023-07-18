@@ -2,73 +2,100 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:cloudwalk_assessment/app/core/utilities/errors/failure.dart';
 import 'package:cloudwalk_assessment/app/domain/entities/image_entity.dart';
 import 'package:cloudwalk_assessment/app/presentation/cubits/images_cubit.dart';
-import 'package:cloudwalk_assessment/app/presentation/cubits/nasa_images/images_states.dart';
+import 'package:cloudwalk_assessment/app/presentation/cubits/images_states.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../core/helpers/test_helper.mocks.dart';
+import '../../core/utilities/test_helper.mocks.dart';
 
 void main() {
-  late MockNasaImagesUsecase mockUsecase;
-  late ImagesCubit cubit;
+  late ImagesCubit imagesCubit;
+  late MockImagesUsecase mockImagesUsecase;
+  late MockConnectivity mockConnectivity;
 
   setUp(() {
-    mockUsecase = MockNasaImagesUsecase();
-    cubit = ImagesCubit(mockUsecase);
+    mockImagesUsecase = MockImagesUsecase();
+    mockConnectivity = MockConnectivity();
+    imagesCubit = ImagesCubit(mockImagesUsecase, mockConnectivity);
   });
 
-  final imagesList = [
-    const ImageEntity(
-      title: 'Test Movie 1',
-      date: '01 June 2023',
-      explanation: 'Test Explanation 1',
-      hdUrl: 'http://www.example1.com',
-    ),
-    const ImageEntity(
-      title: 'Test Movie 2',
-      date: '02 June 2023',
-      explanation: 'Test Explanation 2',
-      hdUrl: 'http://www.example2.com',
-    ),
-  ];
+  tearDown(() {
+    imagesCubit.close();
+  });
+
+  const testImage = ImageEntity(
+    title: 'Test Movie 1',
+    date: '01 June 2023',
+    explanation: 'Test Explanation 1',
+    imgUrl: 'http://www.example1.com',
+  );
 
   test(
     'initial state should be empty',
-    () => expect(cubit.state, ImagesInitial()),
+    () => expect(
+      imagesCubit.state,
+      ImagesInitial(),
+    ),
   );
 
-  group("images bloc", () {
-    blocTest<ImagesCubit, ImagesStates>(
-      "show loading and loaded",
-      setUp: () => when(mockUsecase.execute()).thenAnswer(
-        (_) async => Right(imagesList),
-      ),
-      build: () => cubit,
-      act: (cubit) => cubit.getImages(),
-      expect: () => <ImagesStates>[
-        ImagesLoading(),
-        ImagesLoaded(imagesList),
-      ],
-      verify: (bloc) {
-        verify(mockUsecase.execute()).called(1);
-      },
-    );
+  blocTest<ImagesCubit, ImagesStates>(
+    'emits ImagesLoaded when internet is available and usecase returns images',
+    setUp: () {
+      when(mockImagesUsecase.getImages()).thenAnswer(
+        (_) async => const Right([testImage]),
+      );
+      when(mockConnectivity.checkConnectivity()).thenAnswer(
+        (_) async => ConnectivityResult.mobile,
+      );
+      when(mockConnectivity.checkConnectivity()).thenAnswer(
+        (_) async => ConnectivityResult.wifi,
+      );
+    },
+    build: () => imagesCubit,
+    act: (cubit) async => await cubit.getImages(),
+    expect: () => [
+      ImagesLoading(),
+      const ImagesLoaded([testImage]),
+    ],
+  );
 
-    blocTest<ImagesCubit, ImagesStates>(
-      "show loading and error",
-      setUp: () => when(mockUsecase.execute()).thenAnswer(
-        (_) async => const Left(Failure("Error retrieving images")),
-      ),
-      build: () => cubit,
-      act: (cubit) => cubit.getImages(),
-      expect: () => <ImagesStates>[
-        ImagesLoading(),
-        const ImagesError("Error retrieving images"),
-      ],
-      verify: (bloc) {
-        verify(mockUsecase.execute()).called(1);
-      },
-    );
-  });
+  blocTest<ImagesCubit, ImagesStates>(
+    'emits ImagesLoaded with cached images when internet is unavailable',
+    setUp: () {
+      when(mockImagesUsecase.getCachedImages()).thenAnswer(
+        (_) async => [testImage],
+      );
+      when(mockConnectivity.checkConnectivity()).thenAnswer(
+        (_) async => ConnectivityResult.none,
+      );
+    },
+    build: () => imagesCubit,
+    act: (cubit) async => await cubit.getImages(),
+    expect: () => [
+      ImagesLoading(),
+      const ImagesLoaded([testImage]),
+    ],
+  );
+
+  blocTest<ImagesCubit, ImagesStates>(
+    'emits ImagesError when usecase returns a failure',
+    setUp: () {
+      when(mockConnectivity.checkConnectivity()).thenAnswer(
+        (_) async => ConnectivityResult.wifi,
+      );
+      when(mockImagesUsecase.getImages()).thenAnswer(
+        (_) async => const Left(
+          Failure('Test Failure'),
+        ),
+      );
+    },
+    build: () => imagesCubit,
+    act: (cubit) => cubit.getImages(),
+    expect: () => [
+      ImagesLoading(),
+      const ImagesError('Test Failure'),
+    ],
+  );
 }

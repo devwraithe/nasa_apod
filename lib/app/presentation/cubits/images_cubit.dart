@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'images_states.dart';
 
 class ImagesCubit extends Cubit<ImagesStates> {
-  final NasaImagesUsecase _usecase;
+  final ImagesUsecase _usecase;
   final Connectivity connectivity;
 
   ImagesCubit(this._usecase, this.connectivity) : super(ImagesInitial());

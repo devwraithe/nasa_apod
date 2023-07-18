@@ -3,23 +3,23 @@ import 'package:flutter/material.dart';
 
 final textTheme = TextTheme(
   headlineLarge: TextStyle(
-    fontSize: Sizing.headlineLarge(),
+    fontSize: Sizing.headlineLarge,
     fontWeight: FontWeight.w700,
   ),
   headlineMedium: TextStyle(
-    fontSize: Sizing.headlineMedium(),
+    fontSize: Sizing.headlineMedium,
     fontWeight: FontWeight.w700,
   ),
   headlineSmall: TextStyle(
-    fontSize: Sizing.headlineSmall(),
+    fontSize: Sizing.headlineSmall,
     fontWeight: FontWeight.w400,
   ),
   bodyLarge: TextStyle(
-    fontSize: Sizing.bodyLarge(),
+    fontSize: Sizing.bodyLarge,
     fontWeight: FontWeight.w400,
   ),
   bodyMedium: TextStyle(
-    fontSize: Sizing.bodyMedium(),
+    fontSize: Sizing.bodyMedium,
     fontWeight: FontWeight.w400,
   ),
 );

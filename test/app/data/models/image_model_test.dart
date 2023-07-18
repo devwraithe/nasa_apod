@@ -2,7 +2,7 @@ import 'package:cloudwalk_assessment/app/data/models/image_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  const imageModelJson = {
+  const mockImageJson = {
     'title': 'Test Image',
     'date': '2023-07-15',
     'explanation': 'This is a test image',
@@ -10,29 +10,29 @@ void main() {
   };
 
   test('ImageModel can be created from JSON', () {
-    final imageModel = ImageModel.fromJson(imageModelJson);
+    final imageModel = ImageModel.fromJson(mockImageJson);
 
     expect(imageModel.title, 'Test Image');
     expect(imageModel.date, '2023-07-15');
     expect(imageModel.explanation, 'This is a test image');
-    expect(imageModel.hdUrl, 'https://example.com/image.jpg');
+    expect(imageModel.imgUrl, 'https://example.com/image.jpg');
   });
 
   test('ImageModel can be converted to ImageEntity', () {
-    final imageModel = ImageModel.fromJson(imageModelJson);
+    final imageModel = ImageModel.fromJson(mockImageJson);
 
     final imageEntity = imageModel.toEntity();
 
     expect(imageEntity.title, 'Test Image');
     expect(imageEntity.date, '2023-07-15');
     expect(imageEntity.explanation, 'This is a test image');
-    expect(imageEntity.hdUrl, 'https://example.com/image.jpg');
+    expect(imageEntity.imgUrl, 'https://example.com/image.jpg');
   });
 
   test('ImageModel instances with the same properties are considered equal',
       () {
-    final imageModel1 = ImageModel.fromJson(imageModelJson);
-    final imageModel2 = ImageModel.fromJson(imageModelJson);
+    final imageModel1 = ImageModel.fromJson(mockImageJson);
+    final imageModel2 = ImageModel.fromJson(mockImageJson);
 
     expect(imageModel1, equals(imageModel2));
   });
@@ -40,7 +40,7 @@ void main() {
   test(
       'ImageModel instances with different properties are not considered equal',
       () {
-    final imageModel1 = ImageModel.fromJson(imageModelJson);
+    final imageModel1 = ImageModel.fromJson(mockImageJson);
     final imageModel2 = ImageModel.fromJson(const {
       'title': 'Different Image',
       'date': '2023-07-16',
