@@ -1,6 +1,6 @@
 # 🚀 Astronomia - NASA Astronomy Pictures of the Day
 
-**Astronomia** is a cross-platform mobile application (Android and iOS) to show pictures from NASA's "Astronomy Picture of the Day" website in a fashion manner.
+**Astronomia** is a cross-platform mobile application (Android and iOS) to show pictures from NASA's "Astronomy Picture of the Day" website in a fashion manner. Note that the `master` branch is the most up-to-date.
 
 ## 🛠️ Features
 
