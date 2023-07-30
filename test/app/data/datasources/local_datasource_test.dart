@@ -1,6 +1,6 @@
 import 'package:cloudwalk_assessment/app/core/utilities/errors/failure.dart';
 import 'package:cloudwalk_assessment/app/domain/entities/image_entity.dart';
-import 'package:cloudwalk_assessment/app/domain/usecases/images_usecase.dart';
+import 'package:cloudwalk_assessment/app/domain/usecases/get_images_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
@@ -8,13 +8,13 @@ import 'package:mockito/mockito.dart';
 import '../../core/utilities/test_helper.mocks.dart';
 
 void main() {
-  late ImagesUsecase usecase;
+  late GetImagesUsecase getImagesUsecase;
   late MockRepository mockRepository;
 
   // set up the test environment by creating a mock repository instance
   setUp(() {
     mockRepository = MockRepository();
-    usecase = ImagesUsecase(mockRepository);
+    getImagesUsecase = GetImagesUsecase(mockRepository);
   });
 
   // define a list of mock ImageEntity objects for testing
@@ -41,7 +41,7 @@ void main() {
     );
 
     // call the use case's getImages method and store the result
-    final result = await usecase.getImages();
+    final result = await getImagesUsecase.execute();
 
     // verify that the result is equal to Right(mockImages)
     expect(result, equals(Right(mockImages)));
@@ -64,7 +64,7 @@ void main() {
     );
 
     // call the use case's getImages method and store the result
-    final result = await usecase.getImages();
+    final result = await getImagesUsecase.execute();
 
     // verify that the result is equal to Left(failure)
     expect(result, equals(const Left(failure)));
