@@ -3,7 +3,7 @@ import 'package:cloudwalk_assessment/app/core/utilities/dependency_injector.dart
 import 'package:cloudwalk_assessment/app/data/datasources/local_datasource.dart';
 import 'package:cloudwalk_assessment/app/data/datasources/remote_datasource.dart';
 import 'package:cloudwalk_assessment/app/domain/repositories/repository.dart';
-import 'package:cloudwalk_assessment/app/domain/usecases/images_usecase.dart';
+import 'package:cloudwalk_assessment/app/domain/usecases/get_images_usecase.dart';
 import 'package:cloudwalk_assessment/app/presentation/cubits/images_cubit.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -26,7 +26,7 @@ void main() {
     // verify that the dependencies are registered correctly
     expect(sl.isRegistered<ImagesCubit>(), isTrue);
     expect(sl.isRegistered<Connectivity>(), isTrue);
-    expect(sl.isRegistered<ImagesUsecase>(), isTrue);
+    expect(sl.isRegistered<GetImagesUsecase>(), isTrue);
     expect(sl.isRegistered<Repository>(), isTrue);
     expect(sl.isRegistered<RemoteDataSource>(), isTrue);
     expect(sl.isRegistered<LocalDataSource>(), isTrue);
@@ -36,7 +36,7 @@ void main() {
     // verify the types of the registered dependencies
     expect(sl<ImagesCubit>(), isA<ImagesCubit>());
     expect(sl<Connectivity>(), isA<Connectivity>());
-    expect(sl<ImagesUsecase>(), isA<ImagesUsecase>());
+    expect(sl<GetImagesUsecase>(), isA<GetImagesUsecase>());
     expect(sl<Repository>(), isA<Repository>());
     expect(sl<RemoteDataSource>(), isA<RemoteDataSource>());
     expect(sl<LocalDataSource>(), isA<LocalDataSource>());

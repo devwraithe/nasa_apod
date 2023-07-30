@@ -1,6 +1,6 @@
 import 'package:cloudwalk_assessment/app/core/utilities/errors/failure.dart';
 import 'package:cloudwalk_assessment/app/domain/entities/image_entity.dart';
-import 'package:cloudwalk_assessment/app/domain/usecases/images_usecase.dart';
+import 'package:cloudwalk_assessment/app/domain/usecases/get_images_usecase.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
