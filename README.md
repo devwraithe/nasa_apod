@@ -1,6 +1,6 @@
-# 🚀 Astronomia - NASA's "Astronomy Picture of the Day"
+# 🚀 NasaAPod or NASA's Astronomy Pictures of the Day
 
-**Astronomia** is a cross-platform mobile application (Android and iOS) to show pictures from NASA's "Astronomy Picture of the Day" website in a fashion manner. Note that the `master` branch is the most up-to-date.
+**NasaAPod** is a cross-platform mobile application (Android and iOS) to show pictures from NASA's "Astronomy Picture of the Day" website in a fashion manner. This project was originally developed as an assessment for a Mobile Engineer role at Cloudwalk Inc. Note that the `master` branch is the most up-to-date.
 
 ## 🛠️ Features
 
