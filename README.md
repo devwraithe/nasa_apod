@@ -1,6 +1,6 @@
-# 🚀 NasaAPod
+# 🚀 NasaAPoD
 
-**NasaAPod** i.e **"Nasa's Astronomy Picture of the Day"** is a cross-platform mobile application (Android and iOS) to show pictures from NASA's "Astronomy Picture of the Day" website in a fashion manner. This project was originally developed as an assessment for a Mobile Engineer role at Cloudwalk Inc. Note that the `master` branch is the most up-to-date.
+**NasaAPod** i.e **"(Nasa) (A)stronomy (P)icture (o)f the (D)ay"** is a cross-platform mobile application (Android and iOS) to show pictures from NASA's "Astronomy Picture of the Day" website in a fashion manner. This project was originally developed as an assessment for a Mobile Engineer role at Cloudwalk Inc. Note that the `master` branch is the most up-to-date.
 
 ## 🛠️ Features
 
