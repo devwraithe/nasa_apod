@@ -44,13 +44,13 @@ To get started with this prototype, follow these steps:
 1. Clone the repository to your local machine
 
 ```sh
-$ git clone https://github.com/devwraithe/cloudwalk_assessment
+$ git clone https://github.com/devwraithe/nasa_apod
 ```
 
 2. Navigate to the project directory
 
 ```
-$ cd cloudwalk_assessment
+$ cd nasa_apod
 ```
 
 3. Install the necessary dependencies
